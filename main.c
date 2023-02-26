@@ -114,6 +114,7 @@ int main() {
 		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
 		printf("Длинный размер\n");
+		printf("kek %ld\n", sizeof(long));
 		printf("Знаковый\n");
 		printf("Нижняя граница LONG_MIN: %ld, %s\n", LONG_MIN, "−2 147 483 647");		// [−2 147 483 647, +2 147 483 647]
 		printf("Верхняя граница LONG_MAX: %ld, %s\n", LONG_MAX, "+2 147 483 647");
