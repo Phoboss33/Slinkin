@@ -18,7 +18,7 @@ int main() {
 		printf("Байт: 1\n");
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");
-		printf("Знаковый\n");
+		printf("Безнаковый\n");
 		printf("Минимальная граница UCHAR_MIN: %d\n", UCHAR_MIN);
 		printf("Минимальная граница UCHAR_MAX: %d\n", UCHAR_MAX);
    }
@@ -27,7 +27,7 @@ int main() {
 		printf("Байт: 16\n");
 		printf("Вещественный тип\n");
 		printf("Длиный размер\n");
-		printf("Беззнаковый\n");
+		printf("Знаковый\n");
 		printf("Минимальная величина LDBL_MIN: %Lg\n", LDBL_MIN);
 		printf("Максимальная величина LDBL_MAX: %Lg\n", LDBL_MAX);
 		printf("Количество значащих цифр LDBL_DIG: %d\n", LDBL_DIG);
@@ -38,6 +38,7 @@ int main() {
 		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");  	
+		printf("Знаковый\n");
 		printf("Минимальная граница %d\n", INT_MIN);
 		printf("Минимальная граница %d\n", INT_MAX);
 	}  
@@ -80,7 +81,7 @@ int main() {
 		printf("Байт: %d \n", CHAR_BIT / 8);
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");
-		printf("Беззнаковый\n"); 	// Знаковый или беззнаковый
+		printf("Знаковый\n");
 		printf("Нижняя граница CHAR_MIN: %d\n", CHAR_MIN);
 		printf("Верзняя граница CHAR_MAX: %d\n", CHAR_MAX);
 	}  
@@ -117,6 +118,7 @@ int main() {
 		printf("Байт: 8");
 		printf("Целочисленный тип\n");
 		printf("Длинный размер\n");
+		printf("Знаковый\n");
 		printf("Нижняя граница LONG_MIN: %li\n", LONG_MIN);
 		printf("Верхняя граница LONG_MAX: %li\n", LONG_MAX);
 	}
