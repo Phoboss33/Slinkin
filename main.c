@@ -77,24 +77,23 @@ int main() {
 		printf("Минимальная погрешность DBL_EPSILON: %g\n", DBL_EPSILON);
 	}  
 	 
-    else if (strcmp(str, "char") == 0) {
+    else if ((strcmp(str, "char") == 0) || (strcmp(str, "signed char") == 0)) {
 		printf("Байт: %d \n", CHAR_BIT / 8);
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");
 		printf("Знаковый\n");
 		printf("Нижняя граница CHAR_MIN: %d\n", CHAR_MIN);
-		printf("Верзняя граница CHAR_MAX: %d\n", CHAR_MAX);
+		printf("Верхняя граница CHAR_MAX: %d\n", CHAR_MAX);
 	}  
-	 
-    else if (strcmp(str, "signed char") == 0) {
+    /*
+	else if (strcmp(str, "signed char") == 0) {
 		printf("Байт: %d \n", CHAR_BIT / 8);
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");
 		printf("Знаковый\n"); 
 		printf("Нижняя граница SCHAR_MIN: %d\n", SCHAR_MIN);
 		printf("Верзняя граница SCHAR_MAX: %d\n", SCHAR_MAX);
-	}  
-	
+	}  */
 	else if ((strcmp("short", str) == 0) || (strcmp("short int", str) == 0) || (strcmp("signed short", str) == 0) || (strcmp("signed short int", str) == 0))  {
 		printf("Байт: 2\n");
 		printf("Целочисленный тип\n");
@@ -115,21 +114,21 @@ int main() {
 
 	else if ((strcmp("long", str) == 0) || (strcmp("long int", str) == 0) ||
 		(strcmp("signed long", str) == 0) || (strcmp("signed long int", str) == 0)) {
-		printf("Байт: 8");
+		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
 		printf("Длинный размер\n");
 		printf("Знаковый\n");
-		printf("Нижняя граница LONG_MIN: %li\n", LONG_MIN);
-		printf("Верхняя граница LONG_MAX: %li\n", LONG_MAX);
+		printf("Нижняя граница LONG_MIN: %ld, %s\n", LONG_MIN, "−2 147 483 647");		// [−2 147 483 647, +2 147 483 647]
+		printf("Верхняя граница LONG_MAX: %ld, %s\n", LONG_MAX, "+2 147 483 647");
 	}
 
 	else if ((strcmp("unsigned long", str) == 0) || (strcmp("unsigned long int", str) == 0)) {
-		printf("Байт: 8");
+		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
 		printf("Длинный размер\n");
 		printf("Беззнаковый\n");
 		printf("Нижняя граница: %d\n", 0);
-		printf("Верхняя граница ULONG_MAX: %lu\n", ULONG_MAX);
+		printf("Верхняя граница ULONG_MAX: %lu, %s\n", ULONG_MAX,"+4 294 967 295]"); // [0, 0, +4 294 967 295]]
 	}
 
 	else if ((strcmp("long long", str) == 0) || (strcmp("long long int", str) == 0) ||
@@ -137,15 +136,15 @@ int main() {
 		printf("Байт: 8\n");
 		printf("Целочисленный тип\n");
 		printf("Знаковый\n");
-		printf("Длинный длинный размер\n");
+		printf("Сверхдлинный размер\n");
 		printf("Нижняя граница LLONG_MIN: %lli\n", LLONG_MIN);
 		printf("Верхняя граница LLONG_MAX: %lli\n", LLONG_MAX);
 	}
 
 	else if ((strcmp("unsigned long long", str) == 0) || (strcmp("unsigned long long int", str) == 0)) {
-		printf("Байт: 8");
+		printf("Байт: 8\n");
 		printf("Целочисленный тип\n");
-		printf("Длинный длинный размер\n");
+		printf("Сверхдлинный размер\n");
 		printf("Беззнаковый\n");
 		printf("Нижняя граница: %d\n", 0);
 		printf("Верхняя граница ULLONG_MAX: %llu\n", ULLONG_MAX);
