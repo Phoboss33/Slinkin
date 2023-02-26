@@ -44,16 +44,13 @@ int main() {
 	}  
 	
 	else if (strcmp("unsigned", str) == 0 || strcmp("unsigned int", str) == 0) {
-		printf("Байт: 2\n");
+		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
-		printf("Короткий размер\n");
+		printf("Штатный размер\n");
 		printf("Беззнаковый\n");
 		printf("Нижняя граница %d\n", 0);
 		printf("Верхняя граница UINT_MAX: %u\n", UINT_MAX);
 	}
-	
-
-
 	
    else if (strcmp("float",str) == 0) {
 		printf("Байт: 4\n");
