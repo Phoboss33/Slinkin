@@ -1,2 +1,2 @@
-# Slinkin лаб 2_2
+# Slinkin
 
