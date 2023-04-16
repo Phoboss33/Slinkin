@@ -8,8 +8,8 @@ int isGreater(int x, int y) {
 }
 
 int main() {
-    int mas[7] = {1, 2, 3, 2, 1, 2, 3};
-    int res[7] = {};
+    int mas[] = {1, 2, 3, 2, 1, 2, 3, 2, 1};
+    int res[] = {};
     int sizemas = (sizeof(mas) / sizeof(int)) - 1;
 
     for (size_t i = 0;i < sizemas;i++) {
