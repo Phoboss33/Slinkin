@@ -34,14 +34,14 @@ int main() {
 		printf("Минимальная погрешность %Lg\n", LDBL_EPSILON);
 	}
 	
-   if (strcmp("int",str) == 0) || strcmp("short int",str) == 0 || strcmp("signed short",str) == 0 || strcmp("signed short int",str) == 0) {
+   /*if (strcmp("int",str) == 0) || strcmp("short int",str) == 0 || strcmp("signed short",str) == 0 || strcmp("signed short int",str) == 0) {
 		printf("Байт: 4\n");
 		printf("Целочисленный тип\n");
 		printf("Штатный размер\n");  // Доделать
 		printf("Беззнаковый\n");
 		printf("Минимальная граница %d\n", INT_MIN);
 		printf("Минимальная граница %d\n", INT_MAX);
-	}  
+	}  */
 	
    if (strcmp("float",str) == 0) {
 		printf("Байт: 4\n");

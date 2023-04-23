@@ -1,34 +1,34 @@
 #include <stdio.h>
-#include <limits.h>
-#include <stdlib.h>
 
-void func(short N, short len) {
-    short mas[len];
-
-    printf("print number: \n");
-
-    for (int i = 0;i < len;i++) {
-        scanf("%hd",&N);
-        mas[i] = N;
-    }
-
-    for (int i = 0;i < len;i++) {
-        printf("mas[%d]:= %hd\n",i,mas[i]);
-    }
-    if (mas[0] < mas[1]) {      // mas[len-1]
-        printf("является\n"); 
-    }
-    else {
-        printf("err\n"); 
-    }
+int isUp(int x, int y) {
+    return x < y;
 }
 
 int main() {
-    short N = 0, len = 0;
+    printf("write count of numbers:\n");
 
-    printf("input number N > 1, [one: len, two: your number]\n");
-    scanf("%hd",&len);
-    printf("len:= %hd\n",len);
+    int N = 0;
 
-    func(N,len);
+    scanf("%d",&N);
+    printf("write numbers:\n");
+    
+    int mas[N];
+    int numb = 0;
+    for (int i = 0;i < N; i++){
+        scanf("%d",&numb);
+        mas[i] = numb;
+    }
+
+    int sum = isUp(mas[0],mas[1]);
+    for (int i = 0;i < N-1;i++){
+        sum &= isUp(mas[i],mas[i + 1]);
+        printf("%d\n", sum);
+    }
+
+    if (sum == 1) {
+        printf("\nYes\n");
+    }
+    else
+        printf("No\n");
+    
 }
