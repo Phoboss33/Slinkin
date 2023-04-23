@@ -56,7 +56,7 @@ int main() {
     int len = N-1;
 
     for (int i;i < N;i++){
-        scanf(" %d",&numb);
+        scanf(" %d",&numb); // fgets(mas, 9, stdin);
         mas[i] = numb;
     }
 

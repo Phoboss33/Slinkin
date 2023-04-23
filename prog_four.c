@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 
 int main()
 {   
@@ -8,7 +7,7 @@ int main()
 
     for (int i = 0; i < 8; i++) {
         printf("Write %d element = ", i + 1);
-        scanf(" %c", &mas[i]); 
+        scanf(" %c", &mas[i]);  // fgets(mas, 9, stdin);
     }
 
     

@@ -11,11 +11,11 @@ int main() {
 
     scanf("%d",&N);
     printf("write numbers:\n");
-    
+
     int mas[N];
     int numb = 0;
     for (int i = 0;i < N; i++){
-        scanf("%d",&numb);
+        scanf("%d",&numb);  // fgets(mas, 9, stdin);
         mas[i] = numb;
     }
 
