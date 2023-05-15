@@ -1,19 +1,23 @@
 #include <stdio.h>
 
-int gcd(int a, int b) {
-    if(b == 0)
-        return a;
-    return gcd(b, a % b);
-}
-
 int main() {
-    int n;
-    printf("Введите натуральные числа: ");
-    scanf("%d", &n);
-    printf("Чичсла меньше %d и взаимно простые с ним: ", n);
-    for(int i = 1; i < n; i++) {
-        if(gcd(i, n) == 1)
+    int n = 0;
+    scanf("%d",&n);
+    
+    int count = 0; 
+    for (int i = 1; i < n; i++) { 
+        int is_prost = 1; 
+        for (int j = 2; j < i; j++) { 
+            if (i % j == 0 && n % j == 0) { 
+                is_prost = 0;
+                break;
+            }
+        }
+        if (is_prost) { 
             printf("%d ", i);
+            count++; 
+        }
     }
+    printf("\nКоличество простых числе для числа %d = %d", n,count);
     return 0;
 }

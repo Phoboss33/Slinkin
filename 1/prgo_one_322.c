@@ -8,7 +8,7 @@ int main() {
     clock_t start = clock(); 
 
     int res = 0, max = 0, iter = 0, numb = 0;
-    int kek = 0;
+
     for (int j = 1; j <= n;j++) {
         res = 0;
         for (int i = 1;i <=j;i++) {
