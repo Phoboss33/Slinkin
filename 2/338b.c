@@ -1,41 +1,59 @@
 #include <stdio.h>
 
-int main() {
-	int N = 0;
-	int M = 0;
-	
-	// Ввод последовательносте
-	printf("Введите длину 1 последовательности\n");
-	scanf(" %d",&N);
-	printf("Введите длину 2 последовательности\n");
-	scanf(" %d",&M);
-	
-    int a[N];
-    int b[M];
-    
-    printf("Введите первую последовательность\n");
-    for (int i = 0; i < N;i++) {
-		scanf("%d", &a[i]);
-	}
-    printf("Введите вторую последовательность\n");
-    for (int i = 0; i < M;i++) {
-		scanf("%d", &b[i]);
-	}
+void main()
+{
+   int j, k = 0, n1, n2;
 
-	// Основной код
-	int mas[N + M];
-	
-	for (int i = 0; i < N;i++){
-		mas[i] = a[i];
-	}
-	
-	for (int i = N; i < N + M;i++){
-		mas[i] = b[i - N];
-	}
-	
-	for (int i = 0; i < N + M;i++){
-		printf("%d ", mas[i]);
-	}
-	
-	
+   printf("Enter number of  element of set A\n");
+
+   scanf("%d", &n1);
+   int a[n1];
+
+   printf("Enter the element of set A \n");
+   for (int i = 0; i < n1; i++)
+      scanf("%d", &a[i]);
+
+   printf("Enter number of element of set B\n");
+
+   scanf("%d", &n2);
+
+   int b[n2];
+   printf("Enter the element of set B \n");
+
+   for (int i = 0; i < n2; i++)
+      scanf("%d", &b[i]);
+
+   int c[n1 + n2];
+
+   for (int i = 0; i < n1; i++)
+   {
+      for (j = 0; j < k; j++)
+      {
+         if (c[j] == a[i])
+            break;
+      }
+      if (j == k)
+      {
+         c[k] = a[i];
+         k++;
+      }
+   }
+
+   for (int i = 0; i < n2; i++)
+   {
+      for (j = 0; j < k; j++)
+      {
+         if (c[j] == b[i])
+            break;
+      }
+      if (j == k)
+      {
+         c[k] = b[i];
+         k++;
+      }
+   }
+
+   printf("Union:\n");
+   for (int i = 0; i < k; i++)
+      printf("%d ", c[i]);
 }
