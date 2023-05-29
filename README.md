@@ -1,24 +1,59 @@
+#include <stdio.h>
 
-https://www.mccme.ru/mmmf-lectures/books/books/book.1.pdf ( 13 стр )
-
-
-# include <stdio.h>
-# include <math.h>
-
-int main ()
+void main()
 {
-unsigned int a,b,c,d,n;
-double sqr;
-printf("n= ");
-scanf("%u",&n);
-sqr = sqrt((double)n);
-printf("%f\n",sqr);
+   int j, k = 0, n1, n2;
 
-for (a=0;a<=sqr;a++)
-	for (b=a;b<=sqr;b++)
-		for (c=b;c<=sqr;c++)
-			for (d=c;d<=sqr;d++)
-				if ((a*a+b*b+c*c+d*d)==n) {
-					printf("\na=%d,b=%d,c=%d,d=%d",a,b,c,d);
-				}
+   printf("Enter number of  element of set A\n");
+
+   scanf("%d", &n1);
+   int a[n1];
+
+   printf("Enter the element of set A \n");
+   for (int i = 0; i < n1; i++)
+      scanf("%d", &a[i]);
+
+   printf("Enter number of element of set B\n");
+
+   scanf("%d", &n2);
+
+   int b[n2];
+   printf("Enter the element of set B \n");
+
+   for (int i = 0; i < n2; i++)
+      scanf("%d", &b[i]);
+
+   int c[n1 + n2];
+
+   for (int i = 0; i < n1; i++)
+   {
+      for (j = 0; j < k; j++)
+      {
+         if (c[j] == a[i])
+            break;
+      }
+      if (j == k)
+      {
+         c[k] = a[i];
+         k++;
+      }
+   }
+
+   for (int i = 0; i < n2; i++)
+   {
+      for (j = 0; j < k; j++)
+      {
+         if (c[j] == b[i])
+            break;
+      }
+      if (j == k)
+      {
+         c[k] = b[i];
+         k++;
+      }
+   }
+
+   printf("Union:\n");
+   for (int i = 0; i < k; i++)
+      printf("%d ", c[i]);
 }
