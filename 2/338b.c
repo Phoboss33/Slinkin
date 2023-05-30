@@ -25,6 +25,14 @@ void main()
 
    int c[n1 + n2];
 
+	for (int i = 0; i < n1; i++)
+    {
+		  c[i] = a[i];
+		  //printf("%d",c[i]);
+		  k++;
+	}
+   
+	/*
    for (int i = 0; i < n1; i++)
    {
       for (j = 0; j < k; j++)
@@ -37,7 +45,7 @@ void main()
          c[k] = a[i];
          k++;
       }
-   }
+   }*/
 
    for (int i = 0; i < n2; i++)
    {

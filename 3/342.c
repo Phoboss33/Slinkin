@@ -21,14 +21,13 @@ int main() {
 	}
 
 	// Основной код
-    int min = 0;
-	float arifm = 0;
+
 	float diff = fabs((float)(a[0] + a[1]) / 2 - x);
 	int one = a[0];
 	int two = a[1];
 	float difarifm = 0;
 
-    for (size_t i = 0;i < N;i++){
+    for (size_t i = 0;i < N;i++) {
         for (size_t j = i;j < N;j++) {   
 		if (i != j) {
 				difarifm = fabs(x - (float)(a[i] + a[j]) / 2);
