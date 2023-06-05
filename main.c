@@ -53,19 +53,23 @@ void FindAllNamesakes(struct pd people[], short count) {
     }
 }
 
-void FindWoman(struct pd people[], short count) {
+void FindWoman(struct pd people[], short count, char id_man[]) {
     //char id_man;
     //printf("Введите номер удостоверения личности мужчины\n");
     //scanf("%s", &id_man);
-	getchar();
+	/*getchar();
 	char id_man[10];
     printf("Введите номер удостоверения личности мужчины\n");
-    fgets(id_man, sizeof(id_man), stdin);
-	
+    fgets(id_man, sizeof(id_man), stdin);*/
+    
+    short len = strlen(id_man);
+    id_man[len-1] = '\0';
     short temp = 0;
     for(size_t i = 0;i < count;i++)
         if (strcmp(people[i].id, id_man) == 0 && people[i].gender == 'M')
             temp = i;
+        //else
+            //printf("%s\n", id_man);
 
     printf("Женщины имеющие общих детей:\n");
     for (size_t i = 0;i < count;i++) {
@@ -194,6 +198,13 @@ int main() {
     short id_children = 0;
     scanf("%d", &id_children);
 
+    printf("Введите номер удостоверения личности мужчины\n");
+    getchar();
+    char id_man[10];
+    fgets(id_man, sizeof(id_man), stdin);
+    
+
+
     printf("Введите кол-во человек\n");
     short count = 0;
 	//int id_children = 0;
@@ -213,7 +224,8 @@ int main() {
     FindParents(people, count, id_children);
     printf("==Однофамильцы==\n");
     FindAllNamesakes(people, count);
-
+    printf("===Поиск женщин===\n");
+    FindWoman(people, count, id_man);
     //printf("Введите номер удостоверения личности ребенка\n");
 
     //scanf("%d", &id_children);
