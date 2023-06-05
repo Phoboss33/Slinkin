@@ -191,6 +191,7 @@ void ZeroFillStuct(struct pd people[], short count) {
 int main() {
     printf("Введите кол-во человек\n");
     short count = 0;
+	//int id_children = 0;
     scanf("%hd",&count);
     struct pd people[count];  
     printf("%d",count);
@@ -198,17 +199,19 @@ int main() {
     //ZeroFillStuct(people, count);
     FillStructArray(people, count);
     PrintStructArray(people, count);
-    getchar(); 
+    
     printf("Др\n");
     char mas[10];
+    getchar(); 
     fgets(mas, sizeof(mas), stdin);
 	FindOfBornInDate(people, count, mas);
 
-	int id_children = 0;
-	getchar(); 
+
+
     printf("Введите номер удостоверения личности ребенка\n");
-    scanf("%d", &id_children);
-	FindParents(people, count, id_children);
+
+    //scanf("%d", &id_children);
+	//FindParents(people, count, id_children);
         //printf("\nВыберете действие:\n1) Поиск по дате\n2) Поиск родителей\n");
         //printf("3) Найти всех однофамильцев\n4) Поиск женщин с общ. детьми\n");
         //printf("5) Заполнить структуры вручную.\n6) Вывести структуры\n");
