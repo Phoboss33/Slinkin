@@ -17,9 +17,9 @@ void FindOfBornInDate(struct pd people[], short count, char mas[]) {
     //har dateOfBorn[10];
     printf("Введите дату рождения в формате dd/mm/yy слитно\n");
     //fgets(dateOfBorn, sizeof(dateOfBorn), stdin);
-    //short len = strlen(dateOfBorn);
-    //dateOfBorn[len-1] = '\0';
-
+    short len = strlen(mas);
+    mas[len-1] = '\0';
+    //mas[9] = '\0';
     printf("В этот день родились:\n");
     for (size_t i = 0; i < count; i++) {
         if (strcmp(people[i].date, mas) == 0) {
@@ -29,9 +29,6 @@ void FindOfBornInDate(struct pd people[], short count, char mas[]) {
 }
 
 void FindParents(struct pd people[], short count, int id_children) {
-
-
-
     if (id_children == 0)
         return;
 
@@ -189,6 +186,14 @@ void ZeroFillStuct(struct pd people[], short count) {
 }
 
 int main() {
+    printf("===Дата рождения===\n");
+    char mas1[10];
+    fgets(mas1, sizeof(mas1), stdin);
+    //printf("%s",mas1);
+    printf("===Введите ребенка===\n");
+    short id_children = 0;
+    scanf("%d", &id_children);
+
     printf("Введите кол-во человек\n");
     short count = 0;
 	//int id_children = 0;
@@ -200,15 +205,16 @@ int main() {
     FillStructArray(people, count);
     PrintStructArray(people, count);
     
-    printf("Др\n");
-    char mas[10];
-    getchar(); 
-    fgets(mas, sizeof(mas), stdin);
-	FindOfBornInDate(people, count, mas);
+    printf("==Др==\n");
+    //char mas[10];
+    //getchar(); 
+    //fgets(mas, sizeof(mas), stdin);
+	FindOfBornInDate(people, count, mas1);
+    FindParents(people, count, id_children);
+    printf("==Однофамильцы==\n");
+    FindAllNamesakes(people, count);
 
-
-
-    printf("Введите номер удостоверения личности ребенка\n");
+    //printf("Введите номер удостоверения личности ребенка\n");
 
     //scanf("%d", &id_children);
 	//FindParents(people, count, id_children);
