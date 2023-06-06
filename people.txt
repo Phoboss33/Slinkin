@@ -74,7 +74,7 @@ Lisa
 Ivanovna
 01012000
 F
-c11
+i11
 5
 3
 5
