@@ -74,18 +74,14 @@ void FindWoman(struct pd people[], short count, char id_man[]) {
     printf("Женщины имеющие общих детей:\n");
     for (size_t i = 0;i < count;i++) {
         for (size_t j = 0;j < people[temp].count_children;j++) {
-            int num = 0;
+            //int num = 0;
             for (size_t k = 0;k < people[i].count_children;k++) {
                 if (people[temp].id_child[j] == people[i].id_child[k]
-                && people[i].gender == 'F' && people[temp].id_child[j] != 0){
+                && people[i].gender == 'F'){
                     printf("%s %s %s\n",people[i].last_name, people[i].name, people[i].patronymic); 
-                    num++;
-                    //break;
                 }
             }
-            if (num > 0 ) {
-                break;
-            }
+
         }
     }
 }
@@ -140,9 +136,7 @@ void PrintStructArray(struct pd people[],short count) {
         printf("ID: %s\n", people[i].id);
         printf("ID детей: ");
         for (size_t k = 0; k < people[i].count_children; k++) {
-            if (people[i].id_child[k] != 0) {
-               printf("%hu ", people[i].id_child[k]);
-            }
+            printf("%hu ", people[i].id_child[k]);
         }
         printf("\n");
     }

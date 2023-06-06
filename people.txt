@@ -17,7 +17,7 @@ Ivanovich
 M
 b123
 2
-2
+0
 3
 Ivanova
 Ira
@@ -59,7 +59,7 @@ Sergeevna
 F
 gg13
 2
-2
+0
 3
 Popova
 Olga
