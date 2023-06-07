@@ -36,11 +36,11 @@ void FindParents(struct pd people[], short count, char id_children[]) {
 	for(int i = 0; i < count;i++) {
 		if (strcmp(people[i].id, id_children) == 0) {
 			temp = i;
-			printf("TEMP = %d\n\n", temp);
+			//printf("TEMP = %d\n\n", temp);
 			break;
 		}
 		else
-			printf("false\n\n");
+			break;
 	}
 
     printf("Его родители:\n");
