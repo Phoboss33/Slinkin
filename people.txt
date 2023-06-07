@@ -1,5 +1,5 @@
-01012000
-3
+05013005
+c11
 b123
 9
 Ivanov
@@ -9,7 +9,7 @@ Ivanovich
 M
 a12
 1
-1
+2
 Ivanov
 Igor
 Ivanovich
@@ -17,7 +17,7 @@ Ivanovich
 M
 b123
 2
-0
+1
 3
 Ivanova
 Ira
@@ -26,7 +26,7 @@ Ivanovna
 F
 c11
 1
-3
+2
 Petrov
 Petr
 petrovich
@@ -34,7 +34,7 @@ petrovich
 M
 d33
 1
-3
+2
 Petrov
 Igor
 Olegovich
@@ -59,7 +59,7 @@ Sergeevna
 F
 gg13
 2
-0
+22
 3
 Popova
 Olga

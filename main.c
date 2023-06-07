@@ -28,14 +28,25 @@ void FindOfBornInDate(struct pd people[], short count, char mas[]) {
     }
 }
 
-void FindParents(struct pd people[], short count, int id_children) {
-    if (id_children == 0)
-        return;
+void FindParents(struct pd people[], short count, char id_children[]) {
+	int temp = 0;
+	short len = strlen(id_children);
+    id_children[len-1] = '\0';
+    
+	for(int i = 0; i < count;i++) {
+		if (strcmp(people[i].id, id_children) == 0) {
+			temp = i;
+			printf("TEMP = %d\n\n", temp);
+			break;
+		}
+		else
+			printf("false\n\n");
+	}
 
     printf("Его родители:\n");
     for (size_t i = 0;i < count;i++) {
         for (size_t j = 0;j < people[i].count_children ;j++) {
-            if (people[i].id_child[j] == id_children){
+            if (people[i].id_child[j] == temp){
                 printf("%s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic);
             }
         }
@@ -43,24 +54,10 @@ void FindParents(struct pd people[], short count, int id_children) {
 }
 
 void FindAllNamesakes(struct pd people[], short count) {
-    for (size_t i = 0;i < count;i++) {  
-        for (size_t j = 0;j < count;j++) {
-            if (strcmp(people[i].last_name,people[j].last_name) == 0 && i != j){
-                printf("%s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic);
-                break;
-            }
-        }
-    }
+	// рекурсия с поиском.
 }
 
 void FindWoman(struct pd people[], short count, char id_man[]) {
-    //char id_man;
-    //printf("Введите номер удостоверения личности мужчины\n");
-    //scanf("%s", &id_man);
-	/*getchar();
-	char id_man[10];
-    printf("Введите номер удостоверения личности мужчины\n");
-    fgets(id_man, sizeof(id_man), stdin);*/
     
     short len = strlen(id_man);
     id_man[len-1] = '\0';
@@ -68,8 +65,7 @@ void FindWoman(struct pd people[], short count, char id_man[]) {
     for(size_t i = 0;i < count;i++)
         if (strcmp(people[i].id, id_man) == 0 && people[i].gender == 'M')
             temp = i;
-        //else
-            //printf("%s\n", id_man);
+
 
     printf("Женщины имеющие общих детей:\n");
     for (size_t i = 0;i < count;i++) {
@@ -193,8 +189,8 @@ int main() {
     fgets(mas1, sizeof(mas1), stdin);
     //printf("%s",mas1);
     printf("===Введите ребенка===\n");
-    short id_children = 0;
-    scanf("%d", &id_children);
+    char id_children[10];
+    fgets(id_children, sizeof(id_children), stdin);
 
     printf("Введите номер удостоверения личности мужчины\n");
     getchar();
