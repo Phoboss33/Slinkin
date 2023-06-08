@@ -79,18 +79,75 @@ char* ReturnFindParents(struct pd people[], short count, char id_children[]) {
     return id_children;
 }
 
+int* AllParents(struct pd people[], short count, char id_man[]) {
+    short len = strlen(id_man);
+    //id_man[len-1] = '\0';
+    short temp = 0;
+    for (size_t i = 0; i < count; i++) {
+        if (strcmp(people[i].id, id_man) == 0) {
+            temp = i;
+            break;
+        }
+    }
+
+    int* arr = NULL;
+    int index = 0;
+    for (size_t i = 0; i < count; i++) {
+        for (size_t j = 0; j < people[temp].count_children; j++) {
+            for (size_t k = 0; k < people[i].count_children; k++) {
+                if (people[temp].id_child[j] == people[i].id_child[k]) {
+                    index++;
+                    arr = realloc(arr, index * sizeof(int));
+                    arr[index] = i;
+                    arr[0] = index;
+                    //printf("%s ", people[i].id);
+                    break;
+                }
+            }
+        }
+    }
+    //printf("[%d]", index);
+    //printf("все у кого общие дети:\n");
+    //for (size_t i = 0; i < index; i++) {
+       //printf("%s\n", people[arr[i]].name);
+    //}
+    return arr;
+}
 
 void FindAllNamesakes(struct pd people[], short count) {
     //printf("%s", ReturnFindParents(people,count,people[3].id));
+    char* test;
+    printf("=>%s}\n", ReturnFindParents(people,count,people[5].id));
     for (int i = 0;i < count;i++)
-        for (int j = 0;j < count;j++)
-        if (strcmp(people[i].last_name, people[j].last_name) == 0 && i!=j) {
-            if (strcmp(ReturnFindParents(people,count,people[i].id), ReturnFindParents(people,count,people[j].id)) != 0)
-            //printf("%d",i);
-            printf("%s %s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic, people[i].id);            //printf("%s\n",ReturnFindParents(people,count,people[i].id));
-            break;
+        for (int j = 0;j < count;j++) {
+            if (strcmp(people[i].last_name, people[j].last_name) == 0 && i!=j) {
+                int* arr_i = AllParents(people, count, ReturnFindParents(people,count,people[i].id));
+                int* arr_j = AllParents(people, count, ReturnFindParents(people,count,people[j].id));
+                //int length = _msize(arr) / sizeof(int);
+                //printf("%d", length);
+                int num = 0;
+                for (int k = 1;k <= arr_i[0];k++)
+                    for (int k1 = 1;k1 <= arr_j[0];k1++)
+                        if (arr_i[k] == arr_j[k1]) {
+                            num++;
+                            break;
+                        }
+                if (num == 0) {
+                    printf("%s %s\n",people[i].last_name,people[i].name);
+                    break;
+                }
+            }
+
+            /*if (strcmp(people[i].last_name, people[j].last_name) == 0 && i!=j) {
+                if (strcmp(ReturnFindParents(people,count,people[i].id), ReturnFindParents(people,count,people[j].id)) != 0) {
+                    printf("%s %s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic, people[i].id);            //printf("%s\n",ReturnFindParents(people,count,people[i].id));
+                    break;
+                }
+                //printf("%d",i);
+            }*/
+            //printf("%s ",ReturnFindParents(people,count,people[1].id));
+
         }
-        //printf("%s ",ReturnFindParents(people,count,people[1].id));
 }
 
 void FindWoman(struct pd people[], short count, char id_man[]) {
@@ -99,7 +156,7 @@ void FindWoman(struct pd people[], short count, char id_man[]) {
     short len = strlen(id_man);
     id_man[len-1] = '\0';
     //printf("%s",id_man);
-    short temp = 0;
+    short temp = -1;
     for(size_t i = 0;i < count;i++)
         if (strcmp(people[i].id, id_man) == 0 && people[i].gender == 'M') {
             temp = i;
@@ -108,6 +165,7 @@ void FindWoman(struct pd people[], short count, char id_man[]) {
 
 
     printf("Женщины имеющие общих детей:\n");
+    if (temp != -1)
     for (size_t i = 0;i < count;i++) {
         for (size_t j = 0;j < people[temp].count_children;j++) {
             //int num = 0;
