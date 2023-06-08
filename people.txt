@@ -1,7 +1,7 @@
 05013005
 d33
 b123
-8
+9
 Ivanov
 Ivan
 Ivanovich
@@ -65,5 +65,13 @@ Olegovich
 01011990
 M
 g513
+1
+8
+Smirnov
+Andrey
+Olegovich
+01011990
+M
+r512
 0
 
