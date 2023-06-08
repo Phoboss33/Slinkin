@@ -31,40 +31,80 @@ void FindOfBornInDate(struct pd people[], short count, char mas[]) {
 void FindParents(struct pd people[], short count, char id_children[]) {
 	int temp = 0;
 	short len = strlen(id_children);
+    printf("%s", id_children);
+
     id_children[len-1] = '\0';
     
 	for(int i = 0; i < count;i++) {
 		if (strcmp(people[i].id, id_children) == 0) {
 			temp = i;
 			//printf("TEMP = %d\n\n", temp);
-			break;
+			//break;
 		}
-		else
-			break;
 	}
 
     printf("Его родители:\n");
     for (size_t i = 0;i < count;i++) {
         for (size_t j = 0;j < people[i].count_children ;j++) {
             if (people[i].id_child[j] == temp){
-                printf("%s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic);
+                printf("%s %s %s\t%s\n", people[i].last_name, people[i].name, people[i].patronymic,people[i].id);
             }
         }
     }
 }
 
+char* ReturnFindParents(struct pd people[], short count, char id_children[]) {
+	int temp = 0;
+    int kek = count;
+    //printf("{%d}", kek);
+	short len = strlen(id_children);
+    //printf("%s ", id_children);
+    //id_children[len-1] = '\0';
+    
+	for(int i = 0; i < count;i++) {
+		if (strcmp(people[i].id, id_children) == 0) {
+			temp = i;
+		}
+	}
+
+    for (size_t i = 0;i < count;i++) {
+        for (size_t j = 0;j < people[i].count_children ;j++) {
+            if (people[i].id_child[j] == temp){
+                return ReturnFindParents(people,count,people[i].id);
+            }
+
+        }
+    }
+
+    return id_children;
+}
+
+
 void FindAllNamesakes(struct pd people[], short count) {
-	// рекурсия с поиском.
+    //printf("%s", ReturnFindParents(people,count,people[3].id));
+    for (int i = 0;i < count;i++)
+        for (int j = 0;j < count;j++)
+        if (strcmp(people[i].last_name, people[j].last_name) == 0 && i!=j) {
+            if (strcmp(ReturnFindParents(people,count,people[i].id), ReturnFindParents(people,count,people[j].id)) != 0)
+            //printf("%d",i);
+            printf("%s %s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic, people[i].id);            //printf("%s\n",ReturnFindParents(people,count,people[i].id));
+            break;
+        }
+        //printf("%s ",ReturnFindParents(people,count,people[1].id));
 }
 
 void FindWoman(struct pd people[], short count, char id_man[]) {
-    
+    //getchar();
+        //printf("%s",id_man);
     short len = strlen(id_man);
     id_man[len-1] = '\0';
+    //printf("%s",id_man);
     short temp = 0;
     for(size_t i = 0;i < count;i++)
-        if (strcmp(people[i].id, id_man) == 0 && people[i].gender == 'M')
+        if (strcmp(people[i].id, id_man) == 0 && people[i].gender == 'M') {
             temp = i;
+            //printf("%hu",temp);
+        }
 
 
     printf("Женщины имеющие общих детей:\n");
@@ -97,11 +137,11 @@ void FillStructArray(struct pd people[], short count) {
         scanf("%s", people[i].date);
 
         printf("Введите пол для %ld человека (M/F):\n", i);
-        scanf(" %c", &people[i].gender);
+        scanf(" %c\n", &people[i].gender);
 
         printf("Введите id для %ld человека:\n", i);
         //scanf("%s", &people[i].id);
-        getchar();
+        //getchar();
         //char id_man[10];
 		fgets(people[i].id, sizeof(people[i].id), stdin);
 		int len = 0; len = strlen(people[i].id);
@@ -189,11 +229,12 @@ int main() {
     fgets(mas1, sizeof(mas1), stdin);
     //printf("%s",mas1);
     printf("===Введите ребенка===\n");
+    
     char id_children[10];
     fgets(id_children, sizeof(id_children), stdin);
 
     printf("Введите номер удостоверения личности мужчины\n");
-    getchar();
+
     char id_man[10];
     fgets(id_man, sizeof(id_man), stdin);
     
