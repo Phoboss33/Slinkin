@@ -55,9 +55,8 @@ void FindParents(struct pd people[], short count, char id_children[]) {
 
 char* ReturnFindParents(struct pd people[], short count, char id_children[]) {
 	int temp = 0;
-    int kek = count;
     //printf("{%d}", kek);
-	short len = strlen(id_children);
+	//short len = strlen(id_children);
     //printf("%s ", id_children);
     //id_children[len-1] = '\0';
     
@@ -80,7 +79,7 @@ char* ReturnFindParents(struct pd people[], short count, char id_children[]) {
 }
 
 int* AllParents(struct pd people[], short count, char id_man[]) {
-    short len = strlen(id_man);
+    //short len = strlen(id_man);
     //id_man[len-1] = '\0';
     short temp = 0;
     for (size_t i = 0; i < count; i++) {
@@ -116,7 +115,7 @@ int* AllParents(struct pd people[], short count, char id_man[]) {
 
 void FindAllNamesakes(struct pd people[], short count) {
     //printf("%s", ReturnFindParents(people,count,people[3].id));
-    char* test;
+    //char* test;
     printf("=>%s}\n", ReturnFindParents(people,count,people[5].id));
     for (int i = 0;i < count;i++)
         for (int j = 0;j < count;j++) {
@@ -133,7 +132,7 @@ void FindAllNamesakes(struct pd people[], short count) {
                             break;
                         }
                 if (num == 0) {
-                    printf("%s %s\n",people[i].last_name,people[i].name);
+                    printf("[%s %s <> %s %s]\n",people[i].last_name,people[i].name,people[j].last_name,people[j].name);
                     break;
                 }
             }
@@ -224,6 +223,7 @@ void FillStructArray(struct pd people[], short count) {
 void PrintStructArray(struct pd people[],short count) {
     for (size_t i = 0; i < count; i++) {
         printf("========\n");
+        printf("num: %ld\n", i);
         printf("ФИО: %s %s %s\n", people[i].last_name, people[i].name, people[i].patronymic);
         printf("Дата рождения: %s\n", people[i].date);
         printf("Пол: %c\n", people[i].gender);
