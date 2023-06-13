@@ -13,9 +13,9 @@ int main() {
     int c = -4;
     int result;
 
-    result = testbitM(num, bit);
+    result = 5 + testbitM(num, bit);
     //result++;
-    printf("result = %d\n",result );
+    printf("result = %d\n",result);
     printf("lastcall: %s\n", lastcall);
 
     result = testbitF(num, bit);
