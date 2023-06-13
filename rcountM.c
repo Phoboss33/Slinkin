@@ -1,20 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 
-#define rcountM(A,result)\
-    int counts = 0;\
-    for (int i = 0; i < strlen(A); i++) {\
-        if ((A[i] & 0xC0) == 0xC0) {\
-            counts++;\
-            i++;\
-        }\
+#define rcountM(A, result) {\
+for (unsigned short i = 0; A[i] != '\0'; i++)\
+    if ((unsigned char)(A)[i] >= 0xD0 && (unsigned char)(A)[i] <= 0xD1) {\
+        result++;\
+        i++;\
     }\
-    result = counts; 
+}
 
 int main() {
-    char str[] = "Привет мирfа";
-    int count;
-    rcountM(str, count);
-    printf("Букв: %d\n", count);
-    return 0;
-} 
+    unsigned short result = 0;
+    char A[100];
+
+    fgets(A, 100, stdin);
+    
+    A[strlen(A)-1] = '\0';
+    rcountM(A, result);
+
+    printf("букв: %hu\n", result);
+
+}
