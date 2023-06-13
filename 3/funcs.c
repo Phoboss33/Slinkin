@@ -24,10 +24,10 @@ int maxF(int A, int B, int C) {
             return C;
         }
     }
-
+	
 }
 
 int squarenumF(int A, int B, int C) {
     strcpy(lastcall, "squarenumF");
-    return (((B)*(B)-4*(A)*(C))>=0 ? ((B)*(B)-4*(A)*(C)==0 ? 1 : 2) : 0);
+    return (((B) * (B) - 4 * (A) * (C)) >= 0 ? ((B) * (B) - 4 * (A) * (C) == 0 ? 1 : 2) : 0);
 }

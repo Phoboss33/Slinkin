@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define rcountM(A,Result)\
+#define rcountM(A,result)\
     int counts = 0;\
     for (int i = 0; i < strlen(A); i++) {\
         if ((A[i] & 0xC0) == 0xC0) {\
@@ -9,7 +9,7 @@
             i++;\
         }\
     }\
-    Result = counts; 
+    result = counts; 
 
 int main() {
     char str[] = "Привет мирfа";
