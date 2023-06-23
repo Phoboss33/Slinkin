@@ -89,9 +89,7 @@ void bubbleSort(int arr[], int n) {
 int main() {
     int arr[MAX_SIZE];
     
-    int n = 1000; 
-    int count = 0;
-    int targetTime = 1; 
+    int n = 850; 
     
     for (int i = 0;i < n;i++) {
         srand(time(NULL));
@@ -100,11 +98,10 @@ int main() {
         }
 
         
-        //quickSort(arr, 0, n-1);
-        insertionSort(arr, n);
-        //optimizedInsertionSort(arr, n, sizeof(int), compare);
-        //optimizedInsertionSort(arr, n);
-        //bubbleSort(arr, n);
+        //quickSort(arr, 0, n-1);			// 3500
+        //insertionSort(arr, n);		// 1222
+        //optimizedInsertionSort(arr, n, sizeof(int), compare);	//1350
+        bubbleSort(arr, n);		// 850
         //count++;
 
   

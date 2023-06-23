@@ -16,7 +16,8 @@ void InsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, 
             int mid = (left + right) / 2;
             if (compar(&arr[mid], &key) <= 0) {
                 left = mid + 1;
-            } else {
+            } 
+            else {
                 right = mid - 1;
             }
         }
@@ -36,7 +37,7 @@ int main() {
     
     InsertSort(arr, num, size, compare);
     
-    printf("Отсортированный массив: ");
+    printf("массив: ");
     for (int i = 0; i < num; i++) {
         printf("%d ", arr[i]);
     }

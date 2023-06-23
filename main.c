@@ -1,18 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int compare(const void *a, const void *b) {
-    return (*(int*)a - *(int*)b);
+    return (a < b);
 }
 
 void BubleSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    int* arr = (int*)base;
+    //int* arr = (int*)base;
+    void *arr = &base;
     for (size_t i = 0; i < num-1; i++) {
         for (size_t j = 0; j < num-i-1; j++) {
-            if (compar(&arr[j], &arr[j+1]) > 0) {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+            if (compar(&arr[j], &arr[j+1]) != 0) {
+				
+                //int temp = arr[j];
+                //arr[j] = arr[j+1];
+                //arr[j+1] = temp;
             }
         }
     }
@@ -57,27 +60,27 @@ void QuickSort(void* base, size_t num, size_t size, int (*compar)(const void*, c
 }
 
 int main() {
-    int arr[] = {66, 33, 25, 12, 22, 11, 99};
+    int arr[] = {66, 33, 25, 33, 22, 11, 99};
     int n = sizeof(arr)/sizeof(arr[0]);
 
     BubleSort(arr, n, sizeof(int), compare);
-    printf("Пузырь: ");
+    printf("Пузырь : ");
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\n");
 
-    int arr2[] = {66, 33, 25, 12, 22, 11, 99};
+    int arr2[] = {66, 12, 25, 12, 22, 11, 99};
     int n2 = sizeof(arr2)/sizeof(arr2[0]);
 
     InsertSort(arr2, n2, sizeof(int), compare);
-    printf("Вставками: ");
+    printf("Вставк : ");
     for (int i = 0; i < n2; i++) {
         printf("%d ", arr2[i]);
     }
     printf("\n");
 
-    int arr3[] = {66, 33, 25, 12, 22, 11, 99};
+    int arr3[] = {66, 12, 25, 12, 5, 99, 99};
     int n3 = sizeof(arr3)/sizeof(arr3[0]);
 
     InsertSort(arr3, n3, sizeof(int), compare);
@@ -87,13 +90,13 @@ int main() {
     }
     printf("\n");
 
-    int arr4[] = {66, 33, 25, 12, 22, 11, 99};
-    int n4 = sizeof(arr4)/sizeof(arr4[0]);
+    //int arr4[] = {66, 33, 25, 12, 22, 11, 99};
+    //int n4 = sizeof(arr4)/sizeof(arr4[0]);
 
-    qsort(arr4, n4, sizeof(int), compare);
-    printf("qsort(): ");
+    //qsort(arr4, n4, sizeof(int), compare);
+    //printf("qsort(): ");
 
-    for (int i = 0; i < n4; i++) {
+    /*for (int i = 0; i < n4; i++) {
         printf("%d ", arr4[i]);
-    }
+    }*/
 }
