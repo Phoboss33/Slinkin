@@ -1,46 +1,37 @@
 #include <stdio.h>
+#include <string.h>
 
 int compare(const void *a, const void *b) {
     return (*(int*)a - *(int*)b);
 }
 
-void InsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    int* arr = (int*)base;
-    for (size_t i = 1; i < num; i++) {
-        int key = arr[i];
-        int left = 0;
-        int right = i - 1;
-        int j = i;
-        
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (compar(&arr[mid], &key) <= 0) {
+void OptInsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
+    char* arr = (char*)base;
+    size_t i, j;
+    for (i = 1; i < num; i++) {
+        char temp[size];
+        memcpy(temp, arr + i * size, size);
+        size_t left = 0, right = i;
+        while (left < right) {
+            size_t mid = left + (right - left) / 2;
+            if (compare(arr + mid * size, temp) <= 0) {
                 left = mid + 1;
-            } 
-            else {
-                right = mid - 1;
+            } else {
+                right = mid;
             }
         }
-        
-        while (j > left) {
-            arr[j] = arr[j-1];
-            j--;
+        for (j = i; j > left; j--) {
+            memcpy(arr + j * size, arr + (j - 1) * size, size);
         }
-        
-        arr[left] = key;
+        memcpy(arr + left * size, temp, size);
     }
 }
 int main() {
-    int arr[] = {5, 2, 9, 1, 3, 7, 4, 6, 8};
-    size_t num = sizeof(arr) / sizeof(arr[0]);
-    size_t size = sizeof(arr[0]);
-    
-    InsertSort(arr, num, size, compare);
-    
-    printf("массив: ");
-    for (int i = 0; i < num; i++) {
+    int arr[] = {5, 3, 1, 4, 2};
+    int size = sizeof(arr)/sizeof(arr[0]);
+
+    OptInsertSort(arr, size, sizeof(int), compare);
+    for(int i=0; i<size; i++) {
         printf("%d ", arr[i]);
     }
-    printf("\n");
-    
 }

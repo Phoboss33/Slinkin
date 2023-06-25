@@ -2,101 +2,90 @@
 #include <stdlib.h>
 #include <string.h>
 
-int compare(const void *a, const void *b) {
-    return (a < b);
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
 }
 
-void BubleSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    //int* arr = (int*)base;
-    void *arr = &base;
-    for (size_t i = 0; i < num-1; i++) {
-        for (size_t j = 0; j < num-i-1; j++) {
-            if (compar(&arr[j], &arr[j+1]) != 0) {
-				
-                //int temp = arr[j];
-                //arr[j] = arr[j+1];
-                //arr[j+1] = temp;
+void BubbleSort(void* base, size_t num, size_t size, int (*compare)(const void*, const void*)) {
+    char* arr = (char*)base;
+    size_t i, j;
+    for (i = 0; i < num - 1; i++) {
+        for (j = 0; j < num - 1 - i; j++) {
+            if (compare(arr + j * size, arr + (j + 1) * size) > 0) {
+                char temp[size];
+                memcpy(temp, arr + j * size, size);
+                memcpy(arr + j * size, arr + (j + 1) * size, size);
+                memcpy(arr + (j + 1) * size, temp, size);
             }
         }
     }
 }
 
-void InsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    int* arr = (int*)base;
-    for (size_t i = 1; i < num; i++) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && compar(&arr[j], &key) > 0) {
-            arr[j+1] = arr[j];
+void InsertSort(void* base, size_t num, size_t size, int (*compare)(const void*, const void*)) {
+    char* arr = (char*)base;
+    size_t i, j;
+    for (i = 1; i < num; i++) {
+        char temp[size];
+        memcpy(temp, arr + i * size, size);
+        j = i - 1;
+        while (j >= 0 && compare(arr + j * size, temp) > 0) {
+            memcpy(arr + (j + 1) * size, arr + j * size, size);
             j--;
         }
-        arr[j+1] = key;
+        memcpy(arr + (j + 1) * size, temp, size);
     }
 }
 
-void QuickSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    int* arr = (int*)base;
+void QuickSort(void* base, size_t num, size_t size, int (*compare)(const void*, const void*)) {
+    char* arr = (char*)base;
     if (num <= 1) {
         return;
     }
-    int pivot = arr[num - 1];
-    int i = -1;
-    for (size_t j = 0; j < num - 1; j++) {
-        if (compar(&arr[j], &pivot) < 0) {
+    char* pivot = arr + (num / 2) * size;
+    char* temp = (char*)malloc(size);
+    size_t i, j;
+    for (i = 0, j = num - 1;; i++, j--) {
+        while (compare(arr + i * size, pivot) < 0) {
             i++;
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
         }
+        while (compare(arr + j * size, pivot) > 0) {
+            j--;
+        }
+        if (i >= j) {
+            break;
+        }
+        memcpy(temp, arr + i * size, size);
+        memcpy(arr + i * size, arr + j * size, size);
+        memcpy(arr + j * size, temp, size);
     }
-    int temp = arr[i+1];
-    arr[i+1] = arr[num-1];
-    arr[num-1] = temp;
-
-    size_t pivotIndex = i + 1;
-
-    QuickSort(arr, pivotIndex, size, compar);
-    QuickSort(arr + (pivotIndex + 1) * size, num - pivotIndex - 1, size, compar);
+    free(temp);
+    QuickSort(arr, i, size, compare);
+    QuickSort(arr + i * size, num - i, size, compare);
 }
 
 int main() {
-    int arr[] = {66, 33, 25, 33, 22, 11, 99};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    int arr1[] = {55, 77, 9, 11, 77};
+    int arr2[] = {55, 77, 9, 11, 77};
+    int arr3[] = {55, 77, 9, 11, 77};
+    size_t arrSize = sizeof(arr1) / sizeof(arr1[0]);
 
-    BubleSort(arr, n, sizeof(int), compare);
-    printf("Пузырь : ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+    BubbleSort(arr1, arrSize, sizeof(int), compare);
+    for (int i = 0; i < arrSize; i++) {
+        printf("%d ", arr1[i]);
     }
     printf("\n");
 
-    int arr2[] = {66, 12, 25, 12, 22, 11, 99};
-    int n2 = sizeof(arr2)/sizeof(arr2[0]);
-
-    InsertSort(arr2, n2, sizeof(int), compare);
-    printf("Вставк : ");
-    for (int i = 0; i < n2; i++) {
+    InsertSort(arr2, arrSize, sizeof(int), compare);
+    for (int i = 0; i < arrSize; i++) {
         printf("%d ", arr2[i]);
     }
     printf("\n");
 
-    int arr3[] = {66, 12, 25, 12, 5, 99, 99};
-    int n3 = sizeof(arr3)/sizeof(arr3[0]);
-
-    InsertSort(arr3, n3, sizeof(int), compare);
-    printf("Быстрая: ");
-    for (int i = 0; i < n3; i++) {
+    QuickSort(arr3, arrSize, sizeof(int), compare);
+    for (int i = 0; i < arrSize; i++) {
         printf("%d ", arr3[i]);
     }
     printf("\n");
 
-    //int arr4[] = {66, 33, 25, 12, 22, 11, 99};
-    //int n4 = sizeof(arr4)/sizeof(arr4[0]);
-
-    //qsort(arr4, n4, sizeof(int), compare);
-    //printf("qsort(): ");
-
-    /*for (int i = 0; i < n4; i++) {
-        printf("%d ", arr4[i]);
-    }*/
+    return 0;
 }
