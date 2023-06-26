@@ -21,7 +21,22 @@ void swap(void *a, void *b, size_t size) {
     free(temp);
 }
 
-void BubbleSort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
+void BubbleSort(void* base, size_t num, size_t size, int (*compare)(const void*, const void*)) {
+    char* arr = (char*)base;
+    size_t i, j;
+    for (i = 0; i < num - 1; i++) {
+        for (j = 0; j < num - 1 - i; j++) {
+            if (compare(arr + j * size, arr + (j + 1) * size) > 0) {
+                char temp[size];
+                memcpy(temp, arr + j * size, size);
+                memcpy(arr + j * size, arr + (j + 1) * size, size);
+                memcpy(arr + (j + 1) * size, temp, size);
+            }
+        }
+    }
+}
+
+void BubbleSort2(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
     for (size_t i = 0; i < num-1; i++) {
         for (size_t j = 0; j < num-i-1; j++) {
             if (compar(base + j*size, base + (j+1)*size) > 0) {

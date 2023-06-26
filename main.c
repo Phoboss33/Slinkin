@@ -28,7 +28,7 @@ void InsertSort(void* base, size_t num, size_t size, int (*compare)(const void*,
         char temp[size];
         memcpy(temp, arr + i * size, size);
         j = i - 1;
-        while (j >= 0 && compare(arr + j * size, temp) > 0) {
+        while (j != (size_t)-1 && compare(arr + j * size, temp) > 0) {
             memcpy(arr + (j + 1) * size, arr + j * size, size);
             j--;
         }
@@ -63,10 +63,12 @@ void QuickSort(void* base, size_t num, size_t size, int (*compare)(const void*, 
     QuickSort(arr + i * size, num - i, size, compare);
 }
 
+
+
 int main() {
-    int arr1[] = {55, 77, 9, 11, 77};
+    int arr1[] = {55, 7, 9, 11, 77};
     int arr2[] = {55, 77, 9, 11, 77};
-    int arr3[] = {55, 77, 9, 11, 77};
+    int arr3[] = {55, 77, 99, 11, 77};
     size_t arrSize = sizeof(arr1) / sizeof(arr1[0]);
 
     BubbleSort(arr1, arrSize, sizeof(int), compare);

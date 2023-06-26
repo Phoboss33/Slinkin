@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
@@ -35,74 +35,79 @@ void QuickSort(void* base, size_t num, size_t size, int (*compare)(const void*, 
     QuickSort(arr + i * size, num - i, size, compare);
 }
 
-void InsertSort(int arr[], int n) {
-    for (int i = 1; i < n; i++) {
-        int key = arr[i];
-        int j = i - 1;
+void InsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
+    char* arr = (char*) base;
+    
+    for (size_t i = 1; i < num; i++) {
+        char* key = arr + i * size;
+        size_t j = i - 1;
         
-        while (j >= 0 && arr[j] > key) {
-            arr[j+1] = arr[j];
+        while (j >= 0 && compar(arr + j * size, key) > 0) {
+            memcpy(arr + (j + 1) * size, arr + j * size, size);
             j--;
         }
         
-        arr[j+1] = key;
+        memcpy(arr + (j + 1) * size, key, size);
     }
 }
 
-void OptInsertSort(void* base, size_t num, size_t size, int (*compar)(const void*, const void*)) {
-    char* arr = (char*)base;
-    size_t i, j;
-    for (i = 1; i < num; i++) {
-        char temp[size];
-        memcpy(temp, arr + i * size, size);
-        size_t left = 0, right = i;
-        while (left < right) {
-            size_t mid = left + (right - left) / 2;
-            if (compare(arr + mid * size, temp) <= 0) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        for (j = i; j > left; j--) {
-            memcpy(arr + j * size, arr + (j - 1) * size, size);
-        }
-        memcpy(arr + left * size, temp, size);
-    }
+void OptInsertSort(void* base, size_t num, size_t size, int (*compare)(const void*, const void*)) {
+	char* arr = (char*) base;
+	for (size_t i = 1; i < num; i++) {
+		char* key = arr + i * size;
+		ssize_t left = 0;
+		ssize_t right = i - 1;
+		ssize_t j = i - 1;
+		
+		while (left <= right) {
+			ssize_t middle = (left + right) / 2;
+			if (compare(arr + middle * size, key) <= 0) {
+				left = middle + 1;
+			} else {
+				right = middle - 1;
+			}
+		}
+		
+		memmove(arr + (left + 1) * size, arr + left * size, (j - left + 1) * size);
+		memcpy(arr + left * size, key, size);
+	}
 }
 
-void BubbleSort(int arr[], int n) {
-    for (int i = 0; i < n-1; i++) {
-        for (int j = 0; j < n-i-1; j++) {
-            if (arr[j] > arr[j+1]) {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+void BubbleSort(void* arr, size_t n, size_t size, int (*compare)(const void*, const void*))
+{
+    char* array = (char*)arr;
+
+    for (size_t i = 0; i < n-1; i++) {
+        for (size_t j = 0; j < n-i-1; j++) {
+            if (compare(array + j * size, array + (j+1) * size) > 0) {
+                for (size_t k = 0; k < size; k++) {
+                    char temp = array[j * size + k];
+                    array[j * size + k] = array[(j+1) * size + k];
+                    array[(j+1) * size + k] = temp;
+                }
             }
         }
     }
 }
 
 int main() {
-    int n = 3500;
+    int n = 58990000;
 
-    int arr[n];
+    int* arr = (int*)malloc(n * sizeof(int));
     
-    int count = 0;
-    int targetTime = 1; 
-    
-
-    for (int i = 0; i < n; i++) {
-        arr[i] = rand() % 3500;
+    for (long long int i = 0; i < n; i++) {
+        arr[i] = rand() % n;
     }
 
         
-    //QuickSort(arr, n, sizeof(int), compare); //3500
-    //InsertSort(arr, n); // 1222
-    //OptInsertSort(arr, n, sizeof(int), compare); //1350
-    BubbleSort(arr, n);   // 850
+    //QuickSort(arr, n, sizeof(int), compare); //4400000
+    //InsertSort(arr, n, sizeof(int), compare); // 58990000
+    OptInsertSort(arr, n, sizeof(int), compare); // 250000
+    //BubbleSort(arr, n, sizeof(int), compare);   // 21000
 
-  
+	//for (long long int i = 0; i < n; i++) {
+        //printf("%d", arr[i]);
+    //}
 
     printf("Количество элементов массива: %d\n", n);
 }
