@@ -17,9 +17,22 @@ void paint(int x, int y) {
         return;
     }
     a[y][x] = '1';
-    paint(x + 1, y);
+    
+    for (int i = x + 1; i < sizeof(a[0]); i++) {
+        if (a[y][i] == '1') {
+            break;
+        }
+        paint(i, y);
+    }
+    
+    for (int i = x - 1; i >= 0; i--) {
+        if (a[y][i] == '1') {
+            break;
+        }
+        paint(i, y);
+    }
+    
     paint(x, y + 1);
-    paint(x - 1, y);
     paint(x, y - 1);
 }
 
