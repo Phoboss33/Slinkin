@@ -14,29 +14,29 @@ char a[9][14] = {
 };
 
 void paint(int x, int y, int *count) {
-    int kek[9*14][2]; 
+    int kek[9 * 14][2]; 
     int front = 0;
     int next = 0;
 
     kek[next][0] = x;
     kek[next][1] = y;
     next++;
-    
+
     ++*count;
     while (front < next) {
         x = kek[front][0];
         y = kek[front][1];
         front++;
 
-        if (x < 1 || x > strlen(a[0]) || y < 0 || y >= 9 || a[y][x-1] == '1') {
+        if (x < 1 || x > strlen(a[0]) || y < 0 || y >= 9 || a[y][x - 1] == '1') {
             continue;
         }
 
 
         a[y][x-1] = '1';
 
-        for (int i = x+1; i <= strlen(a[0]); ++i) {
-            if (a[y][i-1] == '1') {
+        for (int i = x + 1; i <= strlen(a[0]); i++) {
+            if (a[y][i - 1] == '1') {
                 break;
             }
             kek[next][0] = i;
@@ -47,7 +47,7 @@ void paint(int x, int y, int *count) {
         paint(x, y+1,count); 
         paint(x-1, y,count); 
 
-        for (int i = y-1; i >= 0; --i) {
+        for (int i = y-1; i >= 0; i--) {
             if (a[i][x-1] == '1') {
                 break;
             }
