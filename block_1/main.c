@@ -45,13 +45,13 @@ int main(int argc, char *argv[]) {
         file = open(argv[i], O_RDONLY);
 
         if (file == -1) {
-            printf("Ошибка при открытии файла\n");
+            printf("Ошибка\n");
             return 1;
         }
 
         bytes_read = read(file, bufferFile, sizeof(bufferFile));
         if (bytes_read == -1) {
-            printf("Ошибка при чтении файла\n");
+            printf("Ошибка\n");
             return 1;
         }
 
@@ -68,5 +68,42 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < numOfFile; i++) {
         printf("%d ", fileNumbers[i]);
     }
+
+    for (int i = 0;i < numOfFile;i++) {
+        int flag = 0;
+
+        for (int j = 0;j < numCount;j++) {
+            if (fileNumbers[i] == numbersSet[j]) {
+                //break;
+                flag = 1;
+                break;
+            }
+
+        }
+        if (flag != 1) {
+            numbersSet[numCount] = fileNumbers[i];
+            numCount++;
+            flag = 0;
+
+        }
+    }
+
+    printf("\nЧисла из set итог:\n");
+    for (int i = 0; i < numCount; i++) {
+        printf("%d ", numbersSet[i]);
+    }
+
+    int сount = sizeof(numbersSet) / sizeof(numbersSet[0]);
+
+    file= open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+    for (int i = 0; i < numCount; i++) {
+        sprintf(buffer, "%d ", numbersSet[i]);
+        ssize_t bytes_written = write(file, buffer, strlen(buffer));
+    }
+
+    close(file);
+
+    close(file);
     return 0;
 }
