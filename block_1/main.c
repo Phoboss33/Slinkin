@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 
 int main(int argc, char *argv[]) {
     int file;
@@ -13,29 +14,45 @@ int main(int argc, char *argv[]) {
 
     file = open(filename, O_RDONLY);
     if (file == -1) {
-        printf("Ошибка при открытии файла\n");
+        perror("Ошибка при открытии файла");
         return 1;
     }
-    
+
+    int lock_result = flock(file, LOCK_EX | LOCK_NB);
+    while (lock_result != 0) {
+        printf("Доступ к файлу заблокирован...\n");
+        usleep(500000); 
+
+        lock_result = flock(file, LOCK_EX | LOCK_NB);
+    }
+
+    printf("Файл разблокирован, чтение\n");
+    usleep(2000000);
+
     bytes_read = read(file, buffer, sizeof(buffer));
     if (bytes_read == -1) {
-        printf("Ошибка при чтении файла\n");
+        perror("Ошибка при чтении");
+        flock(file, LOCK_UN);
+        close(file);
         return 1;
     }
+
+    flock(file, LOCK_UN);
     close(file);
 
-    int numbersSet[256];
+    int numbersSet[256]; 
     int fileNumbers[256];
+
     int numCount = 0;
     int numOfFile = 0;
+
     char *tok = strtok(buffer, " ");
 
     while (tok != NULL) {
-        //printf(" [%s]", tok);
         numbersSet[numCount++] = atoi(tok);
         tok = strtok(NULL, " ");
     }
-    
+
     printf("\nЧисла из set:\n");
     for (int i = 0; i < numCount; i++) {
         printf("%d ", numbersSet[i]);
@@ -45,65 +62,74 @@ int main(int argc, char *argv[]) {
         file = open(argv[i], O_RDONLY);
 
         if (file == -1) {
-            printf("Ошибка\n");
+            printf("Ошибка при открытии файла [%s]\n", argv[i]);
             return 1;
         }
 
         bytes_read = read(file, bufferFile, sizeof(bufferFile));
-        if (bytes_read == -1) {
-            printf("Ошибка\n");
-            return 1;
-        }
 
         char *tokInFile = strtok(bufferFile, " ");
         while (tokInFile != NULL) {
-            //printf(" [%s]", tokInFile);
             fileNumbers[numOfFile++] = atoi(tokInFile);
             tokInFile = strtok(NULL, " ");
         }
 
         close(file);
     }
+
     printf("\n\nЧисла из файлов:\n");
+
     for (int i = 0; i < numOfFile; i++) {
         printf("%d ", fileNumbers[i]);
     }
 
-    for (int i = 0;i < numOfFile;i++) {
+    for (int i = 0; i < numOfFile; i++) {
         int flag = 0;
 
-        for (int j = 0;j < numCount;j++) {
+        for (int j = 0; j < numCount; j++) {
             if (fileNumbers[i] == numbersSet[j]) {
-                //break;
                 flag = 1;
                 break;
             }
-
         }
         if (flag != 1) {
             numbersSet[numCount] = fileNumbers[i];
             numCount++;
             flag = 0;
-
         }
     }
 
     printf("\nЧисла из set итог:\n");
+
     for (int i = 0; i < numCount; i++) {
         printf("%d ", numbersSet[i]);
     }
 
-    int сount = sizeof(numbersSet) / sizeof(numbersSet[0]);
-
-    file= open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-    for (int i = 0; i < numCount; i++) {
-        sprintf(buffer, "%d ", numbersSet[i]);
-        ssize_t bytes_written = write(file, buffer, strlen(buffer));
+    file = open(filename, O_WRONLY);
+    if (file == -1) {
+        perror("Ошибка при открытии на запись");
+        return 1;
     }
 
+    lock_result = flock(file, LOCK_EX | LOCK_NB);
+    while (lock_result != 0) {
+        printf("Доступ к файлу заблокирован...\n");
+        usleep(500000); 
+
+        lock_result = flock(file, LOCK_EX | LOCK_NB);
+    }
+
+    printf("\nФайл разблокирован, начало записи.\n");
+    for (int i = 0; i < numCount; i++) {
+        int out = snprintf(buffer, sizeof(buffer), "%d ", numbersSet[i]);
+        write(file, buffer, out);
+    }
+    usleep(2000000);
+
+    flock(file, LOCK_UN);
     close(file);
 
-    close(file);
+    printf("\nЗапись завершена, файл разблокирован.\n");
+
     return 0;
 }

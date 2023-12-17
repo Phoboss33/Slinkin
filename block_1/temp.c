@@ -1,64 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-#define SET_FILE "set.dat"
+int main() {
+    int fd;
+    int buffer[100];
+    ssize_t bytesRead;
 
-// Функция для проверки, содержится ли число в массиве
-int contains(int *array, int length, int number) {
-    for (int i = 0; i < length; ++i) {
-        if (array[i] == number) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-// Функция для добавления числа в массив, если оно там ещё не числится
-void addUnique(int **array, int *length, int number) {
-    if (!contains(*array, *length, number)) {
-        *array = realloc(*array, (*length + 1) * sizeof(int));
-        (*array)[*length] = number;
-        (*length)++;
-    }
-}
-
-// Основная функция
-int main(int argc, char *argv[]) {
-    // Массив для уникальных значений и его размер
-    int *uniqueValues = NULL;
-    int uniqueCount = 0;
-
-    // Чтение уникальных значений из set.dat
-    FILE *setFile = fopen(SET_FILE, "r");
-    int value;
-    while (fscanf(setFile, "%d", &value) == 1) {
-        addUnique(&uniqueValues, &uniqueCount, value);
-    }
-    fclose(setFile);
-
-    // Чтение значений из исходных файлов
-    for (int i = 1; i < argc; ++i) {
-        FILE *srcFile = fopen(argv[i], "r");
-        if (srcFile == NULL) {
-            fprintf(stderr, "Не удаётся открыть файл %s\n", argv[i]);
-            continue;
-        }
-
-        while (fscanf(srcFile, "%d", &value) == 1) {
-            addUnique(&uniqueValues, &uniqueCount, value);
-        }
-        fclose(srcFile);
+    // Открываем файл с помощью дескриптора
+    fd = open("set.dat", O_RDONLY);
+    if (fd == -1) {
+        perror("open");
+        return 1;
     }
 
-    // Запись уникальных значений обратно в set.dat
-    setFile = fopen(SET_FILE, "w");
-    for (int i = 0; i < uniqueCount; ++i) {
-        fprintf(setFile, "%d\n", uniqueValues[i]);
+    // Читаем содержимое файла
+    bytesRead = read(fd, buffer, sizeof(buffer));
+    if (bytesRead == -1) {
+        perror("read");
+        close(fd);
+        return 1;
     }
-    fclose(setFile);
 
-    // Освобождение памяти
-    free(uniqueValues);
+    // Печатаем содержимое файла
+    printf("Содержимое файла:\n");
+    for (int i = 0; i < bytesRead / sizeof(int); i++) {
+        printf("%d ", buffer[i]);
+    }
+    printf("\n");
+
+    // Закрываем файл
+    close(fd);
 
     return 0;
 }
