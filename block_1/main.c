@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
         if (file == -1) {
             printf("Ошибка при открытии файла [%s]\n", argv[i]);
-            return 1;
+            return 0;
         }
 
         bytes_read = read(file, bufferFile, sizeof(bufferFile));
