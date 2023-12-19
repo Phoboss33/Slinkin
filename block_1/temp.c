@@ -1,37 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 int main() {
-    int fd;
-    int buffer[100];
+    const char* filename = "test.txt";
+    int set = open(filename, O_RDONLY);
+    if (set == -1) {
+        printf("Ошибка открытия файла\n");
+        return 1;
+    }
+
+    // Выделение памяти для массива
+    size_t bufferSize = 5; // Начальный размер массива
+    char* buffer = (char*)malloc(bufferSize);
+    if (!buffer) {
+        printf("Ошибка выделения памяти\n");
+        close(set);
+        return 1;
+    }
+
     ssize_t bytesRead;
-
-    // Открываем файл с помощью дескриптора
-    fd = open("set.dat", O_RDONLY);
-    if (fd == -1) {
-        perror("open");
-        return 1;
+    ssize_t totalBytesRead = 0;
+    while ((bytesRead = read(set, buffer + totalBytesRead, bufferSize)) > 0) {
+        totalBytesRead += bytesRead;
+        
+        if (totalBytesRead == bufferSize) {
+            printf(" Yes");
+            bufferSize *= 2;
+            char* newBuffer = (char*)realloc(buffer, bufferSize);
+            buffer = newBuffer;
+        }
     }
 
-    // Читаем содержимое файла
-    bytesRead = read(fd, buffer, sizeof(buffer));
     if (bytesRead == -1) {
-        perror("read");
-        close(fd);
+        printf("Ошибка чтения файла\n");
+        free(buffer);
+        close(set);
         return 1;
     }
 
-    // Печатаем содержимое файла
-    printf("Содержимое файла:\n");
-    for (int i = 0; i < bytesRead / sizeof(int); i++) {
-        printf("%d ", buffer[i]);
-    }
-    printf("\n");
+    // Вывод данных
+    write(STDOUT_FILENO, buffer, totalBytesRead);
+    printf(" => set\n");
 
-    // Закрываем файл
-    close(fd);
+    // Освобождение памяти и закрытие файла
+    free(buffer);
+    close(set);
 
     return 0;
 }
