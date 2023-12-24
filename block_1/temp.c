@@ -4,49 +4,29 @@
 #include <fcntl.h>
 
 int main() {
-    const char* filename = "test.txt";
-    int set = open(filename, O_RDONLY);
-    if (set == -1) {
-        printf("Ошибка открытия файла\n");
-        return 1;
+    int size = 4;
+    int *mas = NULL;
+    mas = malloc(sizeof(int) * size);
+    mas[0] = 1;
+    mas[1] = 2;
+    mas[2] = 3;
+    mas[3] = 4;
+
+
+    printf("%d\n", sizeof(mas));
+    printf("%d\n", sizeof(mas[0]));
+    for (int i = 0;i < size + 5; i++) {
+        //printf("[%d]", mas[i]);
     }
+    size+=5;
+    int *mas2 = malloc(sizeof(int) * size);;
+    mas2[0] = 5;
+    mas2[3] = 5;
+    mas = realloc(mas2, sizeof(int) * size);
 
-    // Выделение памяти для массива
-    size_t bufferSize = 5; // Начальный размер массива
-    char* buffer = (char*)malloc(bufferSize);
-    if (!buffer) {
-        printf("Ошибка выделения памяти\n");
-        close(set);
-        return 1;
+    for (int i = 0;i < size; i++) {
+
+        printf("[%d]", mas[i]);
     }
-
-    ssize_t bytesRead;
-    ssize_t totalBytesRead = 0;
-    while ((bytesRead = read(set, buffer + totalBytesRead, bufferSize)) > 0) {
-        totalBytesRead += bytesRead;
-        
-        if (totalBytesRead == bufferSize) {
-            printf(" Yes");
-            bufferSize *= 2;
-            char* newBuffer = (char*)realloc(buffer, bufferSize);
-            buffer = newBuffer;
-        }
-    }
-
-    if (bytesRead == -1) {
-        printf("Ошибка чтения файла\n");
-        free(buffer);
-        close(set);
-        return 1;
-    }
-
-    // Вывод данных
-    write(STDOUT_FILENO, buffer, totalBytesRead);
-    printf(" => set\n");
-
-    // Освобождение памяти и закрытие файла
-    free(buffer);
-    close(set);
-
     return 0;
 }
