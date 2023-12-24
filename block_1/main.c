@@ -10,8 +10,8 @@ int main(int argc, char *argv[]) {
 	int fileNumbersSize = 2; 
     int file;
     char *filename = "set.dat";
-    char *buffer = malloc(sizeof(char));
-    char *bufferFile = malloc(sizeof(char));
+    char *buffer = malloc(size);
+    
 
     ssize_t bytesRead = 0;
     ssize_t totalRead = 0;
@@ -54,6 +54,8 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < numCount; i++) {
         printf("%d ", numbersSet[i]);
     }
+
+    char *bufferFile = malloc(size);
 
     for (int i = 1; i < argc; i++) {
         file = open(argv[i], O_RDONLY);
@@ -127,9 +129,11 @@ int main(int argc, char *argv[]) {
         lock_result = flock(file, LOCK_EX | LOCK_NB);
     }
 
+    free(buffer);
+    buffer = realloc(buffer, size);
     printf("\nФайл разблокирован, начало записи.\n");
     for (int i = 0; i < numCount; i++) {
-        int out = snprintf(buffer, sizeof(buffer), "%d ", numbersSet[i]);
+        int out = snprintf(buffer, size, "%d ", numbersSet[i]);
         write(file, buffer, out);
     }
     usleep(2000000);
