@@ -6,15 +6,12 @@
 #include <sys/file.h>
 
 int main(int argc, char *argv[]) {
-	int size = 2;
-	int fileNumbersSize = 2; 
+	int size = 1;
     int file;
     char *filename = "set.dat";
-    char *buffer = malloc(size);
-    
-
-    ssize_t bytesRead = 0;
-    ssize_t totalRead = 0;
+    char *buffer = malloc(sizeof(char));
+    char bufferFile[256];
+    ssize_t bytes_read;
 
     file = open(filename, O_RDONLY);
     if (file == -1) {
@@ -25,20 +22,22 @@ int main(int argc, char *argv[]) {
     printf("Файл разблокирован, чтение\n");
     usleep(2000000);
 
-
-    while((bytesRead = read(file, buffer + totalRead, size - totalRead)) > 0) {
-        totalRead += bytesRead;
-        if (totalRead == size) {
-            size *= 2;
-            buffer = (char*)realloc(buffer, size);
-        }
+	while((bytes_read = read(file, buffer, size) > 0)) {
+		size *= 2;
+		buffer = realloc(buffer, sizeof(buffer) * size);
+		printf("Считывается");
+	}
+    if (bytes_read == -1) {
+        perror("Ошибка при чтении");
+        close(file);
+        return 1;
     }
 
     flock(file, LOCK_UN);
     close(file);
 
-    int numbersSet[size]; 
-    int *fileNumbers = malloc(sizeof(int) * fileNumbersSize);
+    int numbersSet[256]; 
+    int fileNumbers[256];
 
     int numCount = 0;
     int numOfFile = 0;
@@ -55,8 +54,6 @@ int main(int argc, char *argv[]) {
         printf("%d ", numbersSet[i]);
     }
 
-    char *bufferFile = malloc(size);
-
     for (int i = 1; i < argc; i++) {
         file = open(argv[i], O_RDONLY);
 
@@ -64,26 +61,15 @@ int main(int argc, char *argv[]) {
             printf("Ошибка при открытии файла [%s]\n", argv[i]);
             return 0;
         }
-        totalRead = 0;
-        //bytesRead = read(file, bufferFile, sizeof(bufferFile));
-        while((bytesRead = read(file, bufferFile + totalRead, 1)) > 0) {
-            if (bufferFile[totalRead] == ' ') {
-                bufferFile[totalRead] = '\0';
-                fileNumbers[numOfFile++] = atoi(bufferFile);
-                totalRead = 0;
-                if (numOfFile == fileNumbersSize) {
-                    fileNumbersSize *= 2;
-                    fileNumbers = (int*)realloc(fileNumbers, sizeof(int) * fileNumbersSize);
-                }
-            } else {
-                totalRead++;
-                if (totalRead == size) {
-                    size *= 2;
-                    bufferFile = (char*)realloc(bufferFile, size);
-                }
-            }
-            
+
+        bytes_read = read(file, bufferFile, sizeof(bufferFile));
+
+        char *tokInFile = strtok(bufferFile, " ");
+        while (tokInFile != NULL) {
+            fileNumbers[numOfFile++] = atoi(tokInFile);
+            tokInFile = strtok(NULL, " ");
         }
+
         close(file);
     }
 
@@ -129,11 +115,9 @@ int main(int argc, char *argv[]) {
         lock_result = flock(file, LOCK_EX | LOCK_NB);
     }
 
-    free(buffer);
-    buffer = realloc(buffer, size);
     printf("\nФайл разблокирован, начало записи.\n");
     for (int i = 0; i < numCount; i++) {
-        int out = snprintf(buffer, size, "%d ", numbersSet[i]);
+        int out = snprintf(buffer, sizeof(buffer), "%d ", numbersSet[i]);
         write(file, buffer, out);
     }
     usleep(2000000);
