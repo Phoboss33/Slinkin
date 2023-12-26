@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         etalon[i] = buffer[i];
     }
 
-    buffer[filesize - 1] = 0, etalon[filesize - 1] = 0;
+    buffer[filesize] = 0, etalon[filesize] = 0;
     write(file, buffer, filesize);
     
     for (int i = 0;i < filesize;i++) {
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     }
 
     printf("Изменены байты на позициях:\n");
-    for (int i = 0;i < filesize - 1;i++) {
+    for (int i = 0;i < filesize;i++) {
         if(newBuffer[i] == 0) {
             printf("%d ", i);
         }

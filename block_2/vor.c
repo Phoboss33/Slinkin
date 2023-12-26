@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
             usleep(1000000);
         }
     }
-    int fileSize = lseek(file, 0, SEEK_END) - 1;
-    printf("Размер файла: %d байт\n", fileSize + 1);
+    int fileSize = lseek(file, 0, SEEK_END);
+    printf("Размер файла: %d байт\n", fileSize);
 
     srand(time(NULL));
     int positions[fileSize];
