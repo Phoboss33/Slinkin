@@ -8,18 +8,6 @@
 #include <sys/file.h>
 #include <time.h>
 
-void BubbleSort(int* arr, int size) {
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                unsigned char temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
-}
-
 int main(int argc, char *argv[]) {
     const char* filename = "secure.dat";
     int interval = atoi(argv[1]);
@@ -80,6 +68,8 @@ int main(int argc, char *argv[]) {
 
     unsigned char buffer[1];
     unsigned char bufferForReadChar[fileSize];
+
+    unsigned char lastBuffer[fileSize];
     while (1) {
         usleep(interval * 1000);
         
@@ -103,9 +93,10 @@ int main(int argc, char *argv[]) {
 				close(file);
 			}
 			else {
-				printf("Прочитаны байты: позиция, [байт]\n");
+				printf("Прочитаны байты: <позиция>, [байт]\n");
 				for (int i = 0;i < fileSize;i++) {
-					printf("%d [%d]\n",positions[i], bufferForReadChar[i]);
+					printf("<%d> [%d]\n", positions[i], bufferForReadChar[i]);
+                    lastBuffer[positions[i]] = bufferForReadChar[i];
 				}
 				break;
 			}
@@ -116,15 +107,12 @@ int main(int argc, char *argv[]) {
         }
 
     }
-	BubbleSort(positions, fileSize);	
-	for (int i = 0;i < fileSize;i++) {
-		printf("%d", positions[i]);
-	}
-    
-        //usleep(interval * 1000);
+    for (int i = 0;i < fileSize;i++) {
+        printf("%d ", lastBuffer[i]);
+    }
 
-    //read(file, &byteRead, 1);
-    //write(file, 0, 1);
+    file = open("abducted.dat", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+    write(file, lastBuffer, fileSize);
     
 
     return 0;
