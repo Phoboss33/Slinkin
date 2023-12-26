@@ -12,100 +12,57 @@ int main(int argc, char *argv[]) {
     char *filename = "set.dat";
     char *buffer = malloc(size);
     
+
     ssize_t bytesRead = 0;
     ssize_t totalRead = 0;
+	
+	// чтение set
+    file = open(filename, O_RDONLY);
+    if (file == -1) {
+        perror("Ошибка при открытии файла");
+        return 1;
+    }
+
+    printf("Файл разблокирован, чтение\n");
+    usleep(2000000);
 
 
+    while((bytesRead = read(file, buffer + totalRead, size - totalRead)) > 0) {
+        totalRead += bytesRead;
+        if (totalRead == size) {
+            size *= 2;
+            buffer = (char*)realloc(buffer, size);
+        }
+    }
 
-    //printf("Файл разблокирован, чтение\n");
-    //usleep(2000000);
-
-
-
-    
-// чтение файлов .
-// блокировка
-// чтение целевого
-// объединение целевого с прочитанным
-// запись целевого 
-// разблок
-
-
+    flock(file, LOCK_UN);
     close(file);
+	
 
     int numbersSet[size]; 
-    int *fileNumbers = malloc(sizeof(int) * fileNumbersSize);
-
-    int numCount = 0;
-    int numOfFile = 0;
-
     char *tok = strtok(buffer, " ");
 
     while(tok != NULL) {
         numbersSet[numCount++] = atoi(tok);
         tok = strtok(NULL, " ");
     }
-
+    
     printf("\nЧисла из set:\n");
     for (int i = 0; i < numCount; i++) {
         printf("%d ", numbersSet[i]);
     }
 
     
+    // Чтение файлов
+    int *fileNumbers = malloc(sizeof(int) * fileNumbersSize);
 
-    for (int i = 0; i < numOfFile; i++) {
-        int flag = 0;
-
-        for (int j = 0; j < numCount; j++) {
-            if (fileNumbers[i] == numbersSet[j]) {
-                flag = 1;
-                break;
-            }
-        }
-        if (flag != 1) {
-            numbersSet[numCount] = fileNumbers[i];
-            numCount++;
-            flag = 0;
-        }
-    }
-
-    printf("\nЧисла из set итог:\n");
-
-    for (int i = 0; i < numCount; i++) {
-        printf("%d ", numbersSet[i]);
-    }
-
-    file = open(filename, O_WRONLY);
-
-    int lock_result = flock(file, LOCK_EX | LOCK_NB);
-    while (lock_result != 0) {
-        printf("Доступ к файлу заблокирован...\n");
-        usleep(500000); 
-
-        lock_result = flock(file, LOCK_EX | LOCK_NB);
-    }
-
-    free(buffer);
-    buffer = realloc(buffer, size);
-    
-    printf("\nФайл разблокирован, начало записи.\n");
-    for (int i = 0; i < numCount; i++) {
-        int out = snprintf(buffer, size, "%d ", numbersSet[i]);
-        write(file, buffer, out);
-    }
-    usleep(2000000);
-
-    flock(file, LOCK_UN);
-    close(file);
-
-    printf("\nЗапись завершена, файл разблокирован.\n");
+    int numCount = 0;
+    int numOfFile = 0;
 
 
 
 
-
-// чтение из файлов
-char *bufferFile = malloc(size);
+    char *bufferFile = malloc(size);
 
     for (int i = 1; i < argc; i++) {
         file = open(argv[i], O_RDONLY);
@@ -144,7 +101,36 @@ char *bufferFile = malloc(size);
     }
     
     
-    // блокировка
+    
+	
+    for (int i = 0; i < numOfFile; i++) {
+        int flag = 0;
+
+        for (int j = 0; j < numCount; j++) {
+            if (fileNumbers[i] == numbersSet[j]) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag != 1) {
+            numbersSet[numCount] = fileNumbers[i];
+            numCount++;
+            flag = 0;
+        }
+    }
+
+    printf("\nЧисла из set итог:\n");
+
+    for (int i = 0; i < numCount; i++) {
+        printf("%d ", numbersSet[i]);
+    }
+
+    file = open(filename, O_WRONLY);
+    if (file == -1) {
+        perror("Ошибка при открытии на запись");
+        return 1;
+    }
+
     int lock_result = flock(file, LOCK_EX | LOCK_NB);
     while (lock_result != 0) {
         printf("Доступ к файлу заблокирован...\n");
@@ -152,23 +138,20 @@ char *bufferFile = malloc(size);
 
         lock_result = flock(file, LOCK_EX | LOCK_NB);
     }
-    
-    
-    // чтение set.dat
-    file = open(filename, O_RDONLY);
 
-	while((bytesRead = read(file, buffer + totalRead, size - totalRead)) > 0) {
-        totalRead += bytesRead;
-        if (totalRead == size) {
-            size *= 2;
-            buffer = (char*)realloc(buffer, size);
-        }
+    free(buffer);
+    buffer = realloc(buffer, size);
+    printf("\nФайл разблокирован, начало записи.\n");
+    for (int i = 0; i < numCount; i++) {
+        int out = snprintf(buffer, size, "%d ", numbersSet[i]);
+        write(file, buffer, out);
     }
+    usleep(2000000);
 
+    flock(file, LOCK_UN);
+    close(file);
 
-	
-
-
+    printf("\nЗапись завершена, файл разблокирован.\n");
 
     return 0;
 }
