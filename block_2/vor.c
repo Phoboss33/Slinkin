@@ -66,29 +66,40 @@ int main(int argc, char *argv[]) {
         printf("%d ", positions[i]);
     }
 
-
     unsigned char buffer[1];
+    unsigned char bufferForReadChar[fileSize];
     while (1) {
-        usleep(10000);
+        usleep(interval * 1000);
         
         file = open(filename, O_RDWR);
         if (file != -1) {
             
+			if (needRandPos < fileSize) {
+				
+				lseek(file, positions[needRandPos], SEEK_SET);
+				read(file, buffer, 1);
+				printf("\nПрочитан: [%d] %d\n", positions[needRandPos], buffer[0]);
+				
+				bufferForReadChar[needRandPos] = buffer[0];
+				//positions[0] = needRandPos;
 
-            lseek(file, randPos, SEEK_SET);
-            int bytesRead = read(file, buffer, 1);
-            printf("\nПрочитан: [%ld] %d\n", needRandPos, buffer[0]);
-            //positions[0] = needRandPos;
+				lseek(file, positions[needRandPos++], SEEK_SET);
+				char zero = 0;
 
-            lseek(file, needRandPos, SEEK_SET);
-            char zero = 0;
+				write(file, &zero, 1);
 
-            int bytesWrite = write(file, &zero, 1);
-
-            close(file);
+				close(file);
+			}
+			else {
+				printf("Прочитаны байты: позиция, [байт]\n");
+				for (int i = 0;i < fileSize;i++) {
+					printf("%d [%d]\n",positions[i], bufferForReadChar[i]);
+				}
+				break;
+			}
         }
         else {
-            printf("Тревога, уходим!");
+            printf("Тревога, уходим!\n");
             break;
         }
 

@@ -18,17 +18,14 @@ int main(int argc, char *argv[]) {
     int interval = atoi(argv[2]);
     
     unsigned char etalon[filesize];
-    //generateEtalon(etalon, filesize);
     
-
-
     int file = open(name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
     if (file == -1) {
         perror("Error opening file");
         return 1;
     }
 
-    int lock_result = flock(file, LOCK_EX);
+    flock(file, LOCK_EX);
 
     unsigned char buffer[filesize];
     for (int i = 0; i < filesize; i++) {
@@ -37,7 +34,7 @@ int main(int argc, char *argv[]) {
     }
 
     buffer[filesize - 1] = 0, etalon[filesize - 1] = 0;
-    int bytes_written = write(file, buffer, filesize);
+    write(file, buffer, filesize);
     
     for (int i = 0;i < filesize;i++) {
         printf("%d ", etalon[i]);
@@ -51,22 +48,17 @@ int main(int argc, char *argv[]) {
     flock(file, LOCK_UN);
     close(file);
 
-
-    int bytesRead = 0;
-    int totalRead = 0;
     unsigned char newBuffer[filesize];
 
-    int flag = 0;
     while(1) {
-        bytesRead = 0;
         printf("Охранник считывает\n");
         usleep(interval * 1000);
 
         file = open(name, O_RDWR);
-        bytesRead = read(file, newBuffer, filesize);
+        read(file, newBuffer, filesize);
         close(file);
 
-        if(strcmp(newBuffer, etalon) != 0) {
+        if(memcmp(newBuffer, etalon, filesize) != 0) {
             printf("Обнаружен похититель!\n");
             break;
         }
