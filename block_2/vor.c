@@ -41,12 +41,11 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
     int positions[fileSize];
     int needRandPos = 0;
-    int randPos;
+    //int randPos;
     int count = 0;
     close(file);
 
-
-    while(count < fileSize) {
+    /*while(count < fileSize) {
         randPos = rand() % fileSize;
 
         int flag = 0;
@@ -61,7 +60,20 @@ int main(int argc, char *argv[]) {
             positions[count++] = randPos;
         }
 
+    }*/
+
+    for (int i = 0; i < fileSize;i++) {
+        positions[i] = i;
     }
+
+    for (int i = 0;i < fileSize;i++) {
+        int randPos = rand() % (i + 1);
+
+        int temp = positions[i];
+        positions[i] = positions[randPos];
+        positions[randPos] = temp;
+    }
+
     for (int i = 0;i < fileSize;i++) {
         printf("%d ", positions[i]);
     }
@@ -108,7 +120,8 @@ int main(int argc, char *argv[]) {
 
     }
     for (int i = 0;i < fileSize;i++) {
-        printf("%d ", lastBuffer[i]);
+        //printf("%d ", lastBuffer[i]);
+        printf("%c", lastBuffer[i]);
     }
 
     file = open("abducted.dat", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
