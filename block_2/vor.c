@@ -45,7 +45,8 @@ int main(int argc, char *argv[]) {
     int count = 0;
     close(file);
 
-    /*while(count < fileSize) {
+    /*
+    while(count < fileSize) {
         randPos = rand() % fileSize;
 
         int flag = 0;
@@ -59,14 +60,15 @@ int main(int argc, char *argv[]) {
         if (!flag) {
             positions[count++] = randPos;
         }
-
-    }*/
+    }
+    */
 
     for (int i = 0; i < fileSize;i++) {
         positions[i] = i;
     }
 
-    for (int i = 0;i < fileSize;i++) {
+    // Фишер - Йетс
+    for (int i = fileSize - 1; i > 0; i--) {
         int randPos = rand() % (i + 1);
 
         int temp = positions[i];
@@ -74,9 +76,11 @@ int main(int argc, char *argv[]) {
         positions[randPos] = temp;
     }
 
+    printf("\n==\n");
     for (int i = 0;i < fileSize;i++) {
         printf("%d ", positions[i]);
     }
+    printf("==\n");
 
     unsigned char buffer[1];
     unsigned char bufferForReadChar[fileSize];
@@ -120,8 +124,8 @@ int main(int argc, char *argv[]) {
 
     }
     for (int i = 0;i < fileSize;i++) {
-        //printf("%d ", lastBuffer[i]);
-        printf("%c", lastBuffer[i]);
+        printf("%d ", lastBuffer[i]);
+        //printf("%c", lastBuffer[i]);
     }
 
     file = open("abducted.dat", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
