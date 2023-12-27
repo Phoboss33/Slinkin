@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
         positions[i] = i;
     }
 
-    // Фишер - Йетс
+    // Фишер - Йейтс
     for (int i = fileSize - 1; i > 0; i--) {
         int randPos = rand() % (i + 1);
 
