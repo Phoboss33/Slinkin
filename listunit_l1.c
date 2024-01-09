@@ -40,21 +40,24 @@ pnodeL1 createNodeL1(char *data)
     return p;
  }
 
- void disposeNodeL1(pnodeL1 *pn)
-{
-    free((*pn)->data);
-    free(*pn);
-    *pn = NULL;
+void disposeNodeL1(pnodeL1 *pn) {
+    if (*pn != NULL) {
+        pnodeL1 currentNode = *pn;
+        
+        *pn = currentNode->pnext;
+        free(currentNode);
+        currentNode = NULL;
+    } 
 }
 
 pnodeL1 deleteAfterNodeL1(pnodeL1 pn) {
     if (pn != NULL && pn->pnext != NULL) {
-        pnodeL1 deletedNode = pn->pnext;
+        pnodeL1 deleteNode = pn->pnext;
 
-        pn->pnext = deletedNode->pnext;
-        deletedNode->pnext = NULL;
+        pn->pnext = deleteNode->pnext;
+        deleteNode->pnext = NULL;
 
-        return deletedNode;
+        return deleteNode;
     }
     return NULL;
 }
@@ -64,19 +67,20 @@ pnodeL1 deleteAfterNodeL1(pnodeL1 pn) {
     if (pn != NULL && pn->pnext != NULL) {
         pnodeL1 deletedNode = pn->pnext;
         pn->pnext = deletedNode->pnext;
+        
         free(deletedNode);
     }
  }
 
- void disposeListL1(pnodeL1 *ph)
- {
-    while (*ph != NULL) {
-        pnodeL1 next = (*ph)->pnext;
-        (*ph)->pnext = NULL;  
-        free(*ph);
-        *ph = next;
-    }
- }
+	 void disposeListL1(pnodeL1 *ph)
+	 {
+		while (*ph != NULL) {
+			pnodeL1 next = (*ph)->pnext;
+			(*ph)->pnext = NULL;  
+			free(*ph);
+			*ph = next;
+		}
+	 }
 
  void listActionL1(pnodeL1 ph, listfunc func)
  {
@@ -109,21 +113,24 @@ pnodeL1 deleteAfterNodeL1(pnodeL1 pn) {
     return count;
  }
 
+// объединение по байтам
+// в конце не должно быть запятой
 char *listSumStr(char *dest, int maxsize, pnodeL1 ph, char *delimiter)
 {
     pnodeL1 current = ph;
-    int len = 0;
+    int count = 0;
 
-    while (len < maxsize) {
+    while (count < maxsize) {
         if (current != NULL) {
-            strncat(dest, current->data, maxsize - len - 1);
-            len += strlen(current->data);
-            if (len < maxsize - 1) {
+            strncat(dest, current->data, maxsize - 1);
+            count += strlen(current->data);
+            if (count < maxsize - 1) {
                 strcat(dest, delimiter);
-                len++;
+                count++;
             }
             current = current->pnext;
-        } else {
+        } 
+        else {
             return dest;
         }
     }
