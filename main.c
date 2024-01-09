@@ -18,16 +18,16 @@ int main()
 {
   pnodeL1 head = NULL;
   pnodeL1 currentNode = NULL;
-  char dest[50] = "";
+  char dest[255] = "";
 
   head = createNodeL1("1"); 
 
 
 
-  currentNode = addFirstNodeL1(&head, createNodeL1("2"));
+  currentNode = addFirstNodeL1(&head, createNodeL1("23"));
   printf("Добавлен в начало: %s\n", currentNode->data);
 
-  currentNode = addLastNodeL1(&head, createNodeL1("slovoosdkasokd"));
+  currentNode = addLastNodeL1(&head, createNodeL1("slovo"));
   printf("Добавлен в конец: %s\n", currentNode->data);
 
   //currentNode = insertAfterNodeL1(head->pnext, createNodeL1("33"));
@@ -50,7 +50,7 @@ int main()
   //int count = listCountL1(head);
   //printf("Всего %d элементов: \n", count);
 
-  listSumStr(dest, 7, head, ",");
+  listSumStr(dest, 5, head, "<><><><><><><><>");
   printf("Объединение: %s\n", dest);
 
 
