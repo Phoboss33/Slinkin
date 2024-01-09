@@ -115,22 +115,27 @@ pnodeL1 deleteAfterNodeL1(pnodeL1 pn) {
 
 // объединение по байтам
 // в конце не должно быть запятой
-char *listSumStr(char *dest, int maxsize, pnodeL1 ph, char *delimiter)
-{
+char *listSumStr(char *dest, int maxsize, pnodeL1 ph, char *delimiter) {
     pnodeL1 current = ph;
-    int count = 0;
+    int len = 0;
+    char temp[2] = "";
 
-    while (count < maxsize) {
+    while (len < maxsize) {
         if (current != NULL) {
-            strncat(dest, current->data, maxsize - 1);
-            count += strlen(current->data);
-            if (count < maxsize - 1) {
+            for (int i = 0; i < strlen(current->data); i++) {
+                *temp = current->data[i];
+                strcat(dest, temp);
+                len++;
+                if (len == maxsize) {
+                    return dest;
+                }
+            }
+            len++;
+            if (current->pnext != NULL) {
                 strcat(dest, delimiter);
-                count++;
             }
             current = current->pnext;
-        } 
-        else {
+        } else {
             return dest;
         }
     }
