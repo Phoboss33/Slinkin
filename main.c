@@ -20,8 +20,11 @@ int main() {
     current = deleteNodeL2C(&list, list->pnext);
     printf("<удален узел с data: [%lf]>\n", current->data);
     current = addLastNodeL2C(&list, current);
-    current = list->pnext;
-    disposeNodeL2C(&);
+    //current = list->pnext;
+    disposeNodeL2C(&current);
+    
+    //printf("CURRENT: [%p]", current);
+    //printf("list: [%p]", list->pnext);
 
     listActionL2C(list, 1, out);
     listOutL2C(list, 1);
@@ -30,7 +33,7 @@ int main() {
     printf("minmax %ld\n",minmaxL2C(list, 5));
     current = AboveNodeL2C(list, 1, 0);
     current = BelowNodeL2C(list, 1, 4);
-
+    
     disposeListL2C(&list);
     return 0;
 }

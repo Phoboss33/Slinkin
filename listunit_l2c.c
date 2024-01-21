@@ -78,12 +78,15 @@ void disposeNodeL2C(pnodeL2C *pn) {
     if (*pn != NULL) {
         if ((*pn)->pnext == *pn) {
             free(*pn);
+            
         } 
 		else {
             (*pn)->pprev->pnext = (*pn)->pnext;
             (*pn)->pnext->pprev = (*pn)->pprev;
             free(*pn);
         }
+
+        *pn = NULL;
     }
 }
 
