@@ -11,10 +11,12 @@ pnodeL2C createNodeL2C(double data) {
     return p;
 }
 
+
 pnodeL2C addFirstNodeL2C(pnodeL2C *ph, pnodeL2C p) {
     if (*ph == NULL) {
         *ph = p;
-    } else {
+    } 
+    else {
         p->pnext = *ph;
         p->pprev = (*ph)->pprev;
         (*ph)->pprev->pnext = p;
@@ -27,7 +29,8 @@ pnodeL2C addFirstNodeL2C(pnodeL2C *ph, pnodeL2C p) {
 pnodeL2C addLastNodeL2C(pnodeL2C *ph, pnodeL2C p) {
     if (*ph == NULL) {
         *ph = p;
-    } else {
+    } 
+    else {
         p->pnext = *ph;
         p->pprev = (*ph)->pprev;
         (*ph)->pprev->pnext = p;
@@ -53,9 +56,19 @@ pnodeL2C insertBeforeNodeL2C(pnodeL2C pn, pnodeL2C p) {
 }
 
 pnodeL2C deleteNodeL2C(pnodeL2C *ph, pnodeL2C pn) {
-    if (*ph == pn) {
-        *ph = pn->pnext;
+    if (*ph == NULL) {
+        return NULL;
     }
+    else if (*ph == pn) {
+        if ((*ph)->pnext == *ph) { 
+            *ph = NULL;
+            return pn;
+        } 
+        else {
+            *ph = pn->pnext;
+        }
+    }
+
     pn->pprev->pnext = pn->pnext;
     pn->pnext->pprev = pn->pprev;
     return pn;
@@ -79,14 +92,14 @@ void disposeListL2C(pnodeL2C *ph) {
         return;
     }
     pnodeL2C current = *ph;
-    pnodeL2C next;
 
     do {
-        next = current->pnext;
+        pnodeL2C next = current->pnext;
         free(current);
         current = next;
     } 
 	while (current != *ph);
+
     *ph = NULL;
 }
 
@@ -94,25 +107,53 @@ void listActionL2C(pnodeL2C ph, int fwd, listfunc func) {
     if (ph == NULL) {
         return;
     }
-    pnodeL2C curr = fwd ? ph : ph->pprev;
+    
+
+    /*pnodeL2C curr = fwd ? ph : ph->pprev;
+
     do {
         if (func(curr->data) == 0) {
             return;
         }
         curr = fwd ? curr->pnext : curr->pprev;
-    } while (curr != ph);
+    } 
+    while (curr != ph);*/
+
+
+    pnodeL2C curr = ph;
+
+    if (fwd) {
+        do {
+            if (func(curr->data) == 0) 
+                return;
+
+            curr = curr->pnext;
+        }
+        while (curr != ph);
+    }
+    else {
+        do {
+            if (func(curr->data) == 0) 
+                return;
+
+            curr = curr->pnext;
+        }
+        while (curr != ph);
+    }
 }
 
 //
-int printDouble(double data) {
+int print(double data) {
     printf("data: %lf\n", data);
     return 1;
 }
 //
 
+
 void listOutL2C(pnodeL2C ph, int fwd) {
-    listActionL2C(ph, fwd, printDouble);
+    listActionL2C(ph, fwd, print);
 }
+
 
 //
 int count = 0;
@@ -131,6 +172,7 @@ double minmaxL2C(pnodeL2C ph, int min) {
     if (ph == NULL) {
         return 0;
     }
+
     pnodeL2C current = ph->pnext;
     double result = ph->data;
 
@@ -141,7 +183,8 @@ double minmaxL2C(pnodeL2C ph, int min) {
             }
             current = current->pnext;
         }
-    } else {
+    } 
+    else {
         while (current != ph) {
             if (current->data > result) {
                 result = current->data;
@@ -164,13 +207,15 @@ pnodeL2C AboveNodeL2C(pnodeL2C ph, int first, double data) {
                 return current;
             }
             current = current->pnext;
-        } else {
+        } 
+        else {
             current = current->pprev;
             if (current->data > data) {
                 return current;
             }
         }
-    } while (current != ph);
+    } 
+    while (current != ph);
     return NULL;
 }
 
@@ -179,19 +224,21 @@ pnodeL2C BelowNodeL2C(pnodeL2C ph, int first, double data) {
         return NULL;
     }
     pnodeL2C current = ph;
-
+    
     do {
         if (first) {
             if (current->data < data) {
                 return current;
             }
             current = current->pnext;
-        } else {
+        } 
+        else {
             current = current->pprev;
             if (current->data < data) {
                 return current;
             }
         }
-    } while (current != ph);
+    } 
+    while (current != ph);
     return NULL;
 }
