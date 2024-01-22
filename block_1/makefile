@@ -1,7 +1,7 @@
-main : squnitA.o squnitA.h main.c
+main : squnitA.o squnit.h main.c
 	cc -o main main.c squnitA.o -fsanitize=address
 
-squnitA.o : squnitA.c squnitA.h
+squnitA.o : squnitA.c squnit.h
 	cc -c squnitA.c -fsanitize=address
 
 clean :
