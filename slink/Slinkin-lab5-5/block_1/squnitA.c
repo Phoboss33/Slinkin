@@ -52,7 +52,8 @@ paQueue aQueue_create(int maxsize) {
     que->data = malloc(maxsize * sizeof(int));
     que->maxsize = maxsize;
     que->first = 0;
-    que->last = -1; 
+    que->last = 0; 
+    que->count = 0;
 
     return que;
 }
@@ -64,29 +65,30 @@ void aQueue_destroy(paQueue que) {
 
 void aQueue_put(paQueue que, int number) {
     if (!aQueue_full(que)) {
-        que->last = (que->last + 1) % que->maxsize;
         que->data[que->last] = number;
+        que->last = (que->last + 1) % que->maxsize;
+        que->count++;
     }
-    if (que->last % que->maxsize == 0) 
-        que->last = 0;
 }
 
 int aQueue_get(paQueue que) {
     if (!aQueue_empty(que)) {
+        int temp = que->data[que->first];
         que->first = (que->first + 1) % que->maxsize;
-        return que->data[que->first - 1];
+        que->count--;
+        return temp;
     }
     return 1; 
 }
 
 int aQueue_empty(paQueue que) {
-    return que->last - que->first + 1 == 0;
+    return que->count == 0;
 }
 
 int aQueue_full(paQueue que) {
-    return que->last - que->first + 1 == que->maxsize;
+    return que->count == que->maxsize;
 }
 
 int aQueue_count(paQueue que) {
-    return que->last - que->first + 1;
+    return que->count;
 }

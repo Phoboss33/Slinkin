@@ -33,6 +33,7 @@ typedef struct aQueue
 	{   int *data;   // массив для хранения элементов очереди
 	    int maxsize; // максимальный размер массива
 	    unsigned char first,last;   // индексы начала и конца очереди
+		int count;
 	} aQueue;
 
  // создает очередь

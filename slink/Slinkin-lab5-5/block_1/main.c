@@ -25,7 +25,7 @@ int main() {
     AStack_destroy(stack);
 
     printf("=======\n");
-    queue = aQueue_create(300);
+    queue = aQueue_create(255);
 
     //aQueue_put(queue, 12);
     //aQueue_put(queue, 15);
@@ -35,11 +35,11 @@ int main() {
     //printf("Удален: %d\n", aQueue_get(queue));
     //printf("Удален: %d\n", aQueue_get(queue));
 
-    for (int i = 0;i < 200;i++) {
+    for (int i = 0;i < 250;i++) {
         aQueue_put(queue, 15);
     }
 
-    for (int i = 0;i < 200;i++) {
+    for (int i = 0;i < 250;i++) {
         aQueue_get(queue);
     }
 
