@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Реализация функций для стека
 pAStack AStack_create(int maxsize) {
     pAStack stack = malloc(sizeof(AStack));
 
@@ -65,15 +64,17 @@ void aQueue_destroy(paQueue que) {
 
 void aQueue_put(paQueue que, int number) {
     if (!aQueue_full(que)) {
-        que->last++;
-        que->data[que->last % que->maxsize] = number;
+        que->last = (que->last + 1) % que->maxsize;
+        que->data[que->last] = number;
     }
+    if (que->last % que->maxsize == 0) 
+        que->last = 0;
 }
 
 int aQueue_get(paQueue que) {
     if (!aQueue_empty(que)) {
-        que->first++;
-        return que->data[(que->first - 1) % que->maxsize];
+        que->first = (que->first + 1) % que->maxsize;
+        return que->data[que->first - 1];
     }
     return 1; 
 }

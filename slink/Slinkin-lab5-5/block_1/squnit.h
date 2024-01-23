@@ -32,7 +32,7 @@ typedef struct aQueue *paQueue;
 typedef struct aQueue
 	{   int *data;   // массив для хранения элементов очереди
 	    int maxsize; // максимальный размер массива
-	    int first,last;   // индексы начала и конца очереди
+	    unsigned char first,last;   // индексы начала и конца очереди
 	} aQueue;
 
  // создает очередь

@@ -25,15 +25,33 @@ int main() {
     AStack_destroy(stack);
 
     printf("=======\n");
-    queue = aQueue_create(2);
+    queue = aQueue_create(300);
 
-    aQueue_put(queue, 12);
-    aQueue_put(queue, 15);
+    //aQueue_put(queue, 12);
+    //aQueue_put(queue, 15);
 
-    printf("Удален: %d\n", aQueue_get(queue));
-    aQueue_put(queue, 14);
-    printf("Удален: %d\n", aQueue_get(queue));
-    printf("Удален: %d\n", aQueue_get(queue));
+    //printf("Удален: %d\n", aQueue_get(queue));
+    //aQueue_put(queue, 14);
+    //printf("Удален: %d\n", aQueue_get(queue));
+    //printf("Удален: %d\n", aQueue_get(queue));
+
+    for (int i = 0;i < 200;i++) {
+        aQueue_put(queue, 15);
+    }
+
+    for (int i = 0;i < 200;i++) {
+        aQueue_get(queue);
+    }
+
+    for (int i = 0;i < 10;i++) {
+        aQueue_put(queue, i);
+    }
+
+    for (int i = 0;i < 10;i++) {
+        printf("Удален: %d\n", aQueue_get(queue));
+    }
+
+    
 
     printf("Empty: %d\n", aQueue_empty(queue));
     printf("Full: %d\n", aQueue_full(queue));
